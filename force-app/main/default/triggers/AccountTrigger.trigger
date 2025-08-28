@@ -4,5 +4,5 @@ trigger AccountTrigger on Account (before insert) {
         System.debug('Account ID: ' + acc.Id);
         
     }
-
 }
+
