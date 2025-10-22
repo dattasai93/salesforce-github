@@ -1,5 +1,5 @@
-name: Github Actions Demo by TrainerUser
-run-name: Dattasai is Running the Github Actions
+name: Dev Pipeline
+run-name: ${{ github.actor }} is Running the Github Actions
 on: [push, pull_request ]
 jobs:
   build-and-deploy:
