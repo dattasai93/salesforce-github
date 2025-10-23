@@ -1,6 +1,13 @@
 name: Dev Pipeline
 run-name: ${{ github.actor }} is Running the Github Actions
-on: [push, pull_request ]
+on: 
+  push:
+    paths:
+      - 'force-app/**'
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    paths:
+      - 'force-app/**'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
