@@ -27,7 +27,8 @@ jobs:
 
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
-      
+      - name: Deploy the Code to Salesforce
+        run: sf project deploy start --source-dir force-app --target-org cicd-org
   clean-up:
     runs-on: ubuntu-latest
     steps:
