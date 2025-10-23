@@ -2,7 +2,7 @@ name: Pre Validate to Dev Sandbox
 run-name: ${{ github.actor }} is Running the Github Actions
 on: 
   pull_request:
-    types: [opened, edited, closed]
+    types: [opened, edited, closed, reopened, synchronize]
     branches:
       - develop
     paths:
@@ -11,7 +11,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: developer
+    
     steps:
       - run: echo "This is my first job"
         name: " first Job Message"
