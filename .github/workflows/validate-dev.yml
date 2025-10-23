@@ -13,6 +13,13 @@ jobs:
           fetch-depth: 0
       - name: npm install
         run: npm install
+      - name: Install Salesforce CLI
+        run: npm install @salesforce/cli --global
+
+      - name: Authorize with Salesforce org
+        run: sf org login jwt --username dattasai94@deloitte.com --jwt-key-file assets/server.key --client-id 3MVG9WVXk15qiz1KDgJ0mxVI4LQB3NTffK8m58OATy0NngTx4j3ig6lYA35_15mn_y5XVuRXBeeF9V9Zr_ytd --set-default --alias cicd-org --instance-url https://login.salesforce.com
+      - name: Print User Information
+        run: sf org display user -o cicd-org
   clean-up:
     runs-on: ubuntu-latest
     steps:
