@@ -33,7 +33,7 @@ jobs:
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
       - name: Validate the Code to Dev Sandbox
-        run: sf project deploy preview --source-dir force-app --target-org cicd-org
+        run: sf project deploy validate --source-dir force-app --target-org cicd-org
 
       #- name: Deploy the Code to Dev Sandbox
       #  run: sf project deploy start --source-dir force-app --target-org cicd-org
