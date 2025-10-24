@@ -35,6 +35,7 @@ jobs:
     #    run: sf project deploy start --source-dir force-app --target-org cicd-org 
   clean-up:
     runs-on: ubuntu-latest
+    needs: [build-and-deploy]
     steps:
       - run: echo "This is my Second Job"
         name: "Print Message"
