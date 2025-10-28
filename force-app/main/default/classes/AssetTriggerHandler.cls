@@ -7,7 +7,7 @@ public with sharing class AssetTriggerHandler {
         System.debug('Hi');
 
     }
-     public static void sleep (){
+     public static void flush (){
         System.debug('Hi');
      }
 }
