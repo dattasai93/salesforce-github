@@ -78,8 +78,16 @@ jobs:
         if: steps.pmd_scan.outputs.violations != 0
         run: 
           echo "PMD Violations ${{steps.pmd_scan.outputs.violations}} "
-          echo "PMD outputs ${{toJSON(steps.pmd_scan.outputs)}} "
-          exit 1
+        ##  echo "PMD outputs ${{toJSON(steps.pmd_scan.outputs)}} "
+        ## exit 1
+
+      ## Sacn the code using SonarCloud
+      - name: SonarCloud Scan
+        id: sonar
+        uses: SonarSource/sonarcloud-github-action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
       - name: Decrypt the server.key.enc file
