@@ -13,3 +13,7 @@ jobs:
   build-and-deploy:
     name: Deploy using Reusable teplate
     uses: "./.github/workflows/template.yml"
+    permissions:
+      security-events: write
+      actions: read
+      contents: read 
