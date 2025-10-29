@@ -7,10 +7,10 @@ jobs:
   build:
     permissions:
       # required for all workflows
-      security-events: write
+      security-events: none
       # only required for workflows in private repositories
-      actions: read
-      contents: read
+      actions: none
+      contents: none
 
     runs-on: ubuntu-latest
     environment: developer
