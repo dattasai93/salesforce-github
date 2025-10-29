@@ -2,6 +2,10 @@ name: Reusable workflow
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
     
 jobs:
   build:
@@ -13,7 +17,7 @@ jobs:
       contents: read
 
     runs-on: ubuntu-latest
-    environment: developer
+    environment: ${{ inputs.environment }}
     steps:
       - run: echo "This is my first job"
         name: " first Job Message"

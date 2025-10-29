@@ -16,4 +16,6 @@ jobs:
     permissions:
       security-events: write
       actions: read
-      contents: read 
+      contents: read
+    with:
+      environment: uat
