@@ -19,3 +19,10 @@ jobs:
       contents: read
     with:
       environment: uat
+    secrets: inherit
+    ##  SONAR_TOKEN : $${{secrets.SONAR_TOKEN}}
+    ##  ENCRYPTED_KEY_FILE : $${{secrets.ENCRYPTED_KEY_FILE}}
+    ##  JWT_KEY_FILE : $${{secrets.JWT_KEY_FILE}}
+    ##  KEY : $${{secrets.KEY}}
+    ##  IV : $${{secrets.IV}}
+    ##  SF_CLIENT_ID : $${{secrets.SF_CLIENT_ID}}
