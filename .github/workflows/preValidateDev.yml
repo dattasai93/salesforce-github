@@ -10,7 +10,7 @@ on:
   
 jobs:
   build-and-deploy:
-    name: Deploy using Reusable teplate
+    name: Pre Validate Dev
     uses: "./.github/workflows/template.yml"
     permissions:
       security-events: write

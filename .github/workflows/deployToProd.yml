@@ -1,4 +1,4 @@
-name: Deploy to Dev Sandbox
+name: Deploy to Prod 
 run-name: ${{ github.actor }} is Running the Github Actions
 on: 
   pull_request:
@@ -10,12 +10,12 @@ on:
   
 jobs:
   build-and-deploy:
-    name: Pre Validate Dev
+    name: Pre Validate prod
     uses: "./.github/workflows/template.yml"
     permissions:
       security-events: write
       actions: read
       contents: read
     with:
-      environment: developer
+      environment: production
     secrets: inherit
