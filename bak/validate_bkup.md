@@ -1,0 +1,28 @@
+name: Code Validation
+run-name: ${{ github.actor }} is Running the Github Actions
+on:
+  push:
+    paths:
+      - 'force-app/**'
+    branches:
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+  
+jobs:
+  build-and-deploy:
+    name: Deploy using Reusable teplate
+    uses: "./.github/workflows/template.yml"
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    with:
+      environment: developer
+    secrets: inherit
+    ##  SONAR_TOKEN : $${{secrets.SONAR_TOKEN}}
+    ##  ENCRYPTED_KEY_FILE : $${{secrets.ENCRYPTED_KEY_FILE}}
+    ##  JWT_KEY_FILE : $${{secrets.JWT_KEY_FILE}}
+    ##  KEY : $${{secrets.KEY}}
+    ##  IV : $${{secrets.IV}}
+    ##  SF_CLIENT_ID : $${{secrets.SF_CLIENT_ID}}
