@@ -4,13 +4,13 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - develop
+      - production
     paths:
       - 'force-app/**'
   
 jobs:
   build-and-deploy:
-    name: Pre Validate prod
+    name: Deploy to prod
     uses: "./.github/workflows/template.yml"
     permissions:
       security-events: write
