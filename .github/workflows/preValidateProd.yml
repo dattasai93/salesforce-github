@@ -10,7 +10,7 @@ on:
   
 jobs:
   build-and-deploy:
-    name: Deploy to Production
+    name: Pre Validate to Production
     uses: "./.github/workflows/template.yml"
     permissions:
       security-events: write

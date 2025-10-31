@@ -1,10 +1,10 @@
-name: Deploy to Prod 
+name: Deploy to PROD 
 run-name: ${{ github.actor }} is Running the Github Actions
 on: 
   pull_request:
     types: [closed]
     branches:
-      - production
+      - main
     paths:
       - 'force-app/**'
   
