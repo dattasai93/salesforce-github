@@ -144,7 +144,7 @@ jobs:
 
       - name: Validate the Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed'}}
-        run: 
+        run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
