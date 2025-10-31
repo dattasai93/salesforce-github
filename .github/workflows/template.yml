@@ -103,6 +103,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Print Coverage output
+        run: 
+          echo ${{ steps.upload-coverage.outputs }}
+          echo ${{ toJSON(steps.upload-coverage.outputs) }}
+
+      - name: Decrypt the server.key.enc file
+        run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
+
+      - name: Authorize with Salesforce org
+        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+
       - name: Install SFDX Git delta aka SGD
         run: |
           echo 'y' | sf plugins install sfdx-git-delta
@@ -118,16 +129,14 @@ jobs:
           cat delta/package/package.xml
           cat delta/destructiveChanges/destructiveChanges.xml
 
-      - name: Print Coverage output
-        run: 
-          echo ${{ steps.upload-coverage.outputs }}
-          echo ${{ toJSON(steps.upload-coverage.outputs) }}
-
-      - name: Decrypt the server.key.enc file
-        run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
-
-      - name: Authorize with Salesforce org
-        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+      - name: Validate Pre Destructive Changes
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed'}}
+        run: |
+          if grep -q '<types>' .delta/package/destructiveChanges.xml ; then
+          echo "---- validating added and modified metadata ----"
+          else
+          echo "---- No changes to validate ----"
+          fi
 
       - name: Validate the Code to Salesforce
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed'}}
@@ -135,15 +144,35 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
-          sf project deploy validate --source-dir delta/force-app --target-org cicd-org
 
+          if grep -q '<types>' .delta/package/package.xml ; then
+          echo "---- validating added and modified metadata ----"
+          sf project deploy validate --source-dir delta/force-app --target-org cicd-org
+          else
+          echo "---- No changes to validate ----"
+          fi
+
+      - name: Deploy Pre Destructive Changes
+        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
+        run: |
+          if grep -q '<types>' .delta/package/destructiveChanges.xml ; then
+          echo "---- deploying added and modified metadata ----"
+          else
+          echo "---- No changes to validate ----"
+          fi
       - name: Deploy
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }} 
         run: 
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
+          
+          if grep -q '<types>' .delta/package/package.xml ; then
+          echo "---- Deploying added and modified metadata ----"
           sf project deploy start --source-dir delta/force-app --target-org cicd-org
+          else
+          echo "---- No changes to deploy ----"
+          fi
  
 
 ## If the event is PR [opened, edited, reopened] - Validate the change
