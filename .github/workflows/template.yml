@@ -115,15 +115,16 @@ jobs:
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
-      - name: Create delta folder
-        run: |
-          mkdir delta
+    
 
       - name: Install SFDX Git delta aka SGD
         run: |
           echo 'y' | sf plugins install sfdx-git-delta
 
-
+      - name: Create delta folder
+        run: |
+          mkdir delta
+          
       - name: Generate the delta file for Deployment
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir "./delta" --ignore-whitespace --generate-delta
