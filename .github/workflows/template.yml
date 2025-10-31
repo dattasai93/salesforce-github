@@ -123,8 +123,9 @@ jobs:
 
       - name: Create delta folder
         run: |
+          rm -rf delta
           mkdir delta
-          
+
       - name: Generate the delta file for Deployment
         run: |
           sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir "./delta" --ignore-whitespace --generate-delta
