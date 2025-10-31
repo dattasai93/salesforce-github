@@ -138,7 +138,7 @@ jobs:
           sf project deploy validate --source-dir delta/force-app --target-org cicd-org
 
       - name: Deploy
-        if: ${{ github.event.pull_request.merged == true && github.event.action = 'closed' }} 
+        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }} 
         run: 
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
