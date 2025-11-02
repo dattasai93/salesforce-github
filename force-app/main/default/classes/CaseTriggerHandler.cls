@@ -1,17 +1,19 @@
-public class CaseTriggerHandler {
-
-    // Handle before insert/update events
-    public static void beforeInsertOrUpdate(List<Case> caseList) {
-        for (Case c : caseList) {
-            // Set default Origin if not provided
+public with sharing class CaseTriggerHandler {
+    public static void beforeInsertOrUpdate(List<Case> newCases) {
+        for (Case c : newCases) {
             if (c.Origin == null) {
                 c.Origin = 'Web';
             }
-
-            // Set default Priority if not provided
             if (c.Priority == null) {
                 c.Priority = 'Medium';
             }
+
+            // Example update logic
+            if (c.Subject == null) {
+                c.Subject = 'Default Subject';
+            }
+
+            System.debug('Updated Case fields for: ' + c.Id);
         }
     }
 }
