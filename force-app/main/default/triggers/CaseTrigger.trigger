@@ -40,6 +40,3 @@ private class CaseTriggerTest {
         System.assertEquals('High', insertedCase.Priority, 'Priority should remain High');
     }
 }
-
-    }
-}
