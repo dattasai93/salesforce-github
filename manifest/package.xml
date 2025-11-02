@@ -56,7 +56,8 @@
 		<name>PermissionSet</name>
 	</types>
 	<types>
-		<members>*</members>
+		<members>My Own Profile1</members>
+		<members>My Sys Admin</members>
 		<name>Profile</name>
 	</types>
 	<types>
