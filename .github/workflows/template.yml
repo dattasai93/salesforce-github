@@ -149,7 +149,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed'}}
         run: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
-          echo "---- validating added and modified metadata ----"
+          echo "---- validating Destructive Changes ----"
           else
           echo "---- No changes to validate ----"
           fi
