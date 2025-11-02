@@ -1,12 +1,13 @@
-trigger CaseTrigger on Case (before insert, before update) {
-    CaseTriggerHandler handler = new CaseTriggerHandler();
+trigger CaseTrigger on Case (before insert) {
+    for (Case c : Trigger.new) {
+        if (c.Origin == null) {
+            c.Origin = 'Web';
+        }
 
-    if (Trigger.isBefore) {
-        if (Trigger.isInsert) {
-            handler.beforeInsert(Trigger.new);
+        if (c.Priority == null) {
+            c.Priority = 'Medium';
         }
-        if (Trigger.isUpdate) {
-            handler.beforeUpdate(Trigger.new, Trigger.oldMap);
-        }
+
+        System.debug('New Case created with Subject: ' + c.Subject);
     }
 }

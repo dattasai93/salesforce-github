@@ -96,13 +96,6 @@ jobs:
         ##  echo "PMD outputs ${{toJSON(steps.pmd_scan.outputs)}} "
         ## exit 1
 
-      ## Sacn the code using SonarCloud
-      - name: SonarCloud Scan
-        id: sonar
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Print Coverage output
         run: 
@@ -115,7 +108,26 @@ jobs:
       - name: Authorize with Salesforce org
         run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
-    
+      - name: run the Apex Test Classes
+        run: |
+          sf apex run test --target-org cicd-org --code-coverage --result-format human -d ./ --wait 10
+
+      ## Sacn the code using SonarCloud
+      - name: SonarCloud Scan
+        id: sonar
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload code coverage for Apex to Codecov.io
+        id: upload-coverage
+        uses: codecov/codecov-action@v5.5.1
+        with:
+          flags: Apex
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 
       - name: Install SFDX Git delta aka SGD
         run: |
