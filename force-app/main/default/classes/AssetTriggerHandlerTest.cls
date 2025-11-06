@@ -3,68 +3,64 @@ private class AssetTriggerHandlerTest {
 
     @testSetup
     static void setupData() {
-        // Required for Asset: Account
+        // Required: Asset needs AccountId
         Account acc = new Account(Name = 'Test Account');
         insert acc;
     }
 
     @isTest
-    static void testDefaultsAreSet() {
+    static void testDefaultsApplied() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
 
-        // Asset with neither Status nor Name
-        Asset a1 = new Asset(
-            AccountId = acc.Id
-        );
+        Asset a = new Asset(AccountId = acc.Id); // no Name or Status
 
         Test.startTest();
-        insert a1;
+        insert a; // Fires trigger
         Test.stopTest();
 
-        Asset inserted1 = [SELECT Name, Status FROM Asset WHERE Id = :a1.Id];
-        System.assertEquals('Active', inserted1.Status, 'Status default should be Active');
-        System.assertEquals('New Asset', inserted1.Name, 'Name default should be New Asset');
+        Asset inserted = [SELECT Name, Status FROM Asset WHERE Id = :a.Id];
+        System.assertEquals('Active', inserted.Status);
+        System.assertEquals('New Asset', inserted.Name);
     }
 
     @isTest
-    static void testValuesArePreserved() {
+    static void testValuesPreserved() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
 
-        // Asset with Status and Name already set
-        Asset a2 = new Asset(
+        Asset a = new Asset(
             AccountId = acc.Id,
-            Name = 'Custom Asset',
+            Name = 'Custom Name',
             Status = 'Inactive'
         );
 
         Test.startTest();
-        insert a2;
+        insert a; // Fires trigger
         Test.stopTest();
 
-        Asset inserted2 = [SELECT Name, Status FROM Asset WHERE Id = :a2.Id];
-        System.assertEquals('Inactive', inserted2.Status, 'Existing Status should not be overwritten');
-        System.assertEquals('Custom Asset', inserted2.Name, 'Existing Name should not be overwritten');
+        Asset inserted = [SELECT Name, Status FROM Asset WHERE Id = :a.Id];
+        System.assertEquals('Inactive', inserted.Status);
+        System.assertEquals('Custom Name', inserted.Name);
     }
 
     @isTest
     static void testMultipleAssets() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
 
-        Asset a3 = new Asset(AccountId = acc.Id);
-        Asset a4 = new Asset(AccountId = acc.Id, Name = 'Predefined Name');
+        Asset a1 = new Asset(AccountId = acc.Id);
+        Asset a2 = new Asset(AccountId = acc.Id, Name = 'Predefined Name');
 
-        List<Asset> assets = new List<Asset>{a3, a4};
+        List<Asset> assets = new List<Asset>{a1, a2};
 
         Test.startTest();
         insert assets;
         Test.stopTest();
 
-        Asset insertedA3 = [SELECT Name, Status FROM Asset WHERE Id = :a3.Id];
-        Asset insertedA4 = [SELECT Name, Status FROM Asset WHERE Id = :a4.Id];
+        Asset inserted1 = [SELECT Name, Status FROM Asset WHERE Id = :a1.Id];
+        Asset inserted2 = [SELECT Name, Status FROM Asset WHERE Id = :a2.Id];
 
-        System.assertEquals('New Asset', insertedA3.Name);
-        System.assertEquals('Active', insertedA3.Status);
-        System.assertEquals('Predefined Name', insertedA4.Name);
-        System.assertEquals('Active', insertedA4.Status);
+        System.assertEquals('New Asset', inserted1.Name);
+        System.assertEquals('Active', inserted1.Status);
+        System.assertEquals('Predefined Name', inserted2.Name);
+        System.assertEquals('Active', inserted2.Status);
     }
 }

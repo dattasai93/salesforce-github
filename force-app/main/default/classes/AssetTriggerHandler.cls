@@ -1,5 +1,5 @@
 public with sharing class AssetTriggerHandler {
-    
+
     public static void run() {
         if (Trigger.isBefore && Trigger.isInsert) {
             handleBeforeInsert(Trigger.new);
@@ -8,7 +8,6 @@ public with sharing class AssetTriggerHandler {
 
     private static void handleBeforeInsert(List<Asset> newAssets) {
         for (Asset a : newAssets) {
-            // Example: default values or business logic
             if (a.Status == null) {
                 a.Status = 'Active';
             }
@@ -18,4 +17,3 @@ public with sharing class AssetTriggerHandler {
         }
     }
 }
-
