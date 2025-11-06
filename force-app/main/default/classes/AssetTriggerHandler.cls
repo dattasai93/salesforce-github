@@ -18,3 +18,4 @@ public with sharing class AssetTriggerHandler {
         }
     }
 }
+

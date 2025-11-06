@@ -2,26 +2,45 @@
 private class AssetTriggerHandlerTest {
 
     @isTest
-    static void testBeforeInsertSetsDefaults() {
+    static void testAssetBeforeInsertSetsDefaults() {
         // Arrange
+        Asset assetWithoutValues = new Asset();
+        // You must provide AccountId or ContactId (required by Salesforce)
         Account acc = new Account(Name = 'Test Account');
         insert acc;
+        assetWithoutValues.AccountId = acc.Id;
 
-        // Create asset linked to account (required)
-        Asset a = new Asset(
-            Name = null,
-            Status = null,
-            AccountId = acc.Id
-        );
-
+        // Act
         Test.startTest();
-        insert a; // Fires AssetTrigger → AssetTriggerHandler
+        insert assetWithoutValues;
         Test.stopTest();
 
         // Assert
-        Asset inserted = [SELECT Id, Name, Status, AccountId FROM Asset WHERE Id = :a.Id];
-        System.assertEquals('New Asset', inserted.Name, 'Name should default to New Asset');
-        System.assertEquals('Active', inserted.Status, 'Status should default to Active');
-        System.assertEquals(acc.Id, inserted.AccountId, 'Asset should be linked to the test account');
+        Asset insertedAsset = [SELECT Name, Status FROM Asset WHERE Id = :assetWithoutValues.Id];
+        System.assertEquals('New Asset', insertedAsset.Name, 'Default Name should be set');
+        System.assertEquals('Active', insertedAsset.Status, 'Default Status should be set');
+    }
+
+    @isTest
+    static void testAssetBeforeInsertWithValues() {
+        // Arrange
+        Account acc = new Account(Name = 'Existing Account');
+        insert acc;
+
+        Asset assetWithValues = new Asset(
+            Name = 'Existing Asset',
+            Status = 'Installed',
+            AccountId = acc.Id
+        );
+
+        // Act
+        Test.startTest();
+        insert assetWithValues;
+        Test.stopTest();
+
+        // Assert
+        Asset insertedAsset = [SELECT Name, Status FROM Asset WHERE Id = :assetWithValues.Id];
+        System.assertEquals('Existing Asset', insertedAsset.Name);
+        System.assertEquals('Installed', insertedAsset.Status);
     }
 }
