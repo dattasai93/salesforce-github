@@ -1,9 +1,9 @@
-@isTest
-private class CaseTriggerHandler {
-    @isTest
-    static void testInsertCase() {
-        Case c = new Case(Subject = 'Test', Status = 'New', Origin = 'Phone');
-        insert c;
-        System.assertNotEquals(null, c.Id);
+public class CaseTriggerHandler {
+    public static void handleCases(List<Case> newCases, Map<Id, Case> oldMap) {
+        for (Case c : newCases) {
+            if (c.Subject == null) {
+                c.Subject = 'Default Subject';
+            }
+        }
     }
 }
