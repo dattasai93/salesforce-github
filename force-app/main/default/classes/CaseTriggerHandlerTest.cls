@@ -1,15 +1,20 @@
 @isTest
-static void testNegativeScenario() {
-    Case c = new Case(); // Missing fields, handler should fill them
+private class CaseTriggerHandlerTest {
 
-    Test.startTest();
-    insert c;
-    Test.stopTest();
+    @isTest
+    static void testNegativeScenario() {
+        // Create a Case record with missing fields to test handler defaults
+        Case c = new Case(); // Missing fields, handler should fill them
 
-    Case insertedCase = [SELECT Subject, Origin, Priority FROM Case WHERE Id = :c.Id];
-    System.assertNotEquals(null, insertedCase.Subject, 'Handler should have set a default Subject');
-    System.assertNotEquals(null, insertedCase.Origin, 'Handler should have set a default Origin');
+        Test.startTest();
+        insert c;
+        Test.stopTest();
+
+        // Query the inserted record
+        Case insertedCase = [SELECT Subject, Origin, Priority FROM Case WHERE Id = :c.Id];
+
+        // Verify defaults were filled in by the trigger handler
+        System.assertNotEquals(null, insertedCase.Subject, 'Handler should have set a default Subject');
+        System.assertNotEquals(null, insertedCase.Origin, 'Handler should have set a default Origin');
+    }
 }
-
-
-
