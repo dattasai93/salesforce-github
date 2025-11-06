@@ -1,5 +1,5 @@
 @isTest
-private class CaseTriggerHandlerTest {
+private class CaseTriggerHandler {
     @isTest
     static void testInsertCase() {
         Case c = new Case(Subject = 'Test', Status = 'New', Origin = 'Phone');
