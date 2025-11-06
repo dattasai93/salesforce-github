@@ -1,19 +1,9 @@
-public with sharing class CaseTriggerHandler {
-    public static void beforeInsertOrUpdate(List<Case> newCases) {
-        for (Case c : newCases) {
-            if (c.Origin == null) {
-                c.Origin = 'Web';
-            }
-            if (c.Priority == null) {
-                c.Priority = 'Medium';
-            }
-
-            // Example update logic
-            if (c.Subject == null) {
-                c.Subject = 'Default Subject';
-            }
-
-            System.debug('Updated Case fields for: ' + c.Id);
-        }
+@isTest
+private class CaseTriggerHandlerTest {
+    @isTest
+    static void testInsertCase() {
+        Case c = new Case(Subject = 'Test', Status = 'New', Origin = 'Phone');
+        insert c;
+        System.assertNotEquals(null, c.Id);
     }
 }
