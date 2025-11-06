@@ -1,46 +1,70 @@
 @isTest
 private class AssetTriggerHandlerTest {
 
-    @isTest
-    static void testAssetBeforeInsertSetsDefaults() {
-        // Arrange
-        Asset assetWithoutValues = new Asset();
-        // You must provide AccountId or ContactId (required by Salesforce)
+    @testSetup
+    static void setupData() {
+        // Required for Asset: Account
         Account acc = new Account(Name = 'Test Account');
         insert acc;
-        assetWithoutValues.AccountId = acc.Id;
-
-        // Act
-        Test.startTest();
-        insert assetWithoutValues;
-        Test.stopTest();
-
-        // Assert
-        Asset insertedAsset = [SELECT Name, Status FROM Asset WHERE Id = :assetWithoutValues.Id];
-        System.assertEquals('New Asset', insertedAsset.Name, 'Default Name should be set');
-        System.assertEquals('Active', insertedAsset.Status, 'Default Status should be set');
     }
 
     @isTest
-    static void testAssetBeforeInsertWithValues() {
-        // Arrange
-        Account acc = new Account(Name = 'Existing Account');
-        insert acc;
+    static void testDefaultsAreSet() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
 
-        Asset assetWithValues = new Asset(
-            Name = 'Existing Asset',
-            Status = 'Installed',
+        // Asset with neither Status nor Name
+        Asset a1 = new Asset(
             AccountId = acc.Id
         );
 
-        // Act
         Test.startTest();
-        insert assetWithValues;
+        insert a1;
         Test.stopTest();
 
-        // Assert
-        Asset insertedAsset = [SELECT Name, Status FROM Asset WHERE Id = :assetWithValues.Id];
-        System.assertEquals('Existing Asset', insertedAsset.Name);
-        System.assertEquals('Installed', insertedAsset.Status);
+        Asset inserted1 = [SELECT Name, Status FROM Asset WHERE Id = :a1.Id];
+        System.assertEquals('Active', inserted1.Status, 'Status default should be Active');
+        System.assertEquals('New Asset', inserted1.Name, 'Name default should be New Asset');
+    }
+
+    @isTest
+    static void testValuesArePreserved() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+
+        // Asset with Status and Name already set
+        Asset a2 = new Asset(
+            AccountId = acc.Id,
+            Name = 'Custom Asset',
+            Status = 'Inactive'
+        );
+
+        Test.startTest();
+        insert a2;
+        Test.stopTest();
+
+        Asset inserted2 = [SELECT Name, Status FROM Asset WHERE Id = :a2.Id];
+        System.assertEquals('Inactive', inserted2.Status, 'Existing Status should not be overwritten');
+        System.assertEquals('Custom Asset', inserted2.Name, 'Existing Name should not be overwritten');
+    }
+
+    @isTest
+    static void testMultipleAssets() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+
+        Asset a3 = new Asset(AccountId = acc.Id);
+        Asset a4 = new Asset(AccountId = acc.Id, Name = 'Predefined Name');
+
+        List<Asset> assets = new List<Asset>{a3, a4};
+
+        Test.startTest();
+        insert assets;
+        Test.stopTest();
+
+        Asset insertedA3 = [SELECT Name, Status FROM Asset WHERE Id = :a3.Id];
+        Asset insertedA4 = [SELECT Name, Status FROM Asset WHERE Id = :a4.Id];
+
+        System.assertEquals('New Asset', insertedA3.Name);
+        System.assertEquals('Active', insertedA3.Status);
+        System.assertEquals('Predefined Name', insertedA4.Name);
+        System.assertEquals('Active', insertedA4.Status);
     }
 }
