@@ -1,9 +1,14 @@
 public with sharing class CaseTriggerHandler {
-    public void beforeInsert(List<Case> newCases) {
-        System.debug('Before insert logic');
-    }
-
-    public void beforeUpdate(List<Case> newCases, Map<Id, Case> oldCasesMap) {
-        System.debug('Before update logic');
+    public static void applyDefaults(List<Case> newCases) {
+        for (Case c : newCases) {
+            // Default Origin if missing
+            if (c.Origin == null) {
+                c.Origin = 'Web';
+            }
+            // Default Priority if missing
+            if (c.Priority == null) {
+                c.Priority = 'Medium';
+            }
+        }
     }
 }

@@ -1,9 +1,19 @@
 public with sharing class AssetTriggerHandler {
-    public static void run (){
-        System.debug('Hello');
 
+    public static void run() {
+        if (Trigger.isBefore && Trigger.isInsert) {
+            handleBeforeInsert(Trigger.new);
+        }
     }
-    public static void sleep (){
-        System.debug('Hi');
+
+    private static void handleBeforeInsert(List<Asset> newAssets) {
+        for (Asset a : newAssets) {
+            if (a.Status == null) {
+                a.Status = 'Active';
+            }
+            if (a.Name == null) {
+                a.Name = 'New Asset';
+            }
+        }
     }
 }
