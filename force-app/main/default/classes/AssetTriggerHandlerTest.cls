@@ -3,7 +3,7 @@ private class AssetTriggerHandlerTest {
 
     @testSetup
     static void setupData() {
-        // Required: Asset needs AccountId
+        // Asset requires AccountId
         Account acc = new Account(Name = 'Test Account');
         insert acc;
     }
@@ -11,8 +11,7 @@ private class AssetTriggerHandlerTest {
     @isTest
     static void testDefaultsApplied() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
-
-        Asset a = new Asset(AccountId = acc.Id); // no Name or Status
+        Asset a = new Asset(AccountId = acc.Id); // No Name or Status
 
         Test.startTest();
         insert a; // Fires trigger
@@ -26,7 +25,6 @@ private class AssetTriggerHandlerTest {
     @isTest
     static void testValuesPreserved() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
-
         Asset a = new Asset(
             AccountId = acc.Id,
             Name = 'Custom Name',
@@ -45,14 +43,13 @@ private class AssetTriggerHandlerTest {
     @isTest
     static void testMultipleAssets() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
-
         Asset a1 = new Asset(AccountId = acc.Id);
         Asset a2 = new Asset(AccountId = acc.Id, Name = 'Predefined Name');
 
         List<Asset> assets = new List<Asset>{a1, a2};
 
         Test.startTest();
-        insert assets;
+        insert assets; // Fires trigger
         Test.stopTest();
 
         Asset inserted1 = [SELECT Name, Status FROM Asset WHERE Id = :a1.Id];
