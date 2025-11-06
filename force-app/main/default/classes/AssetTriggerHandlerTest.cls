@@ -1,23 +1,22 @@
 @isTest
 private class AssetTriggerHandlerTest {
-    @isTest
-    static void testAssetTriggerHandler() {
-        // Create test data
-        Account acc = new Account(Name = 'Test Account');
-        insert acc;
 
-        // Create an Asset record that fires the trigger
-        Asset ast = new Asset(
-            Name = 'Test Asset',
-            AccountId = acc.Id
+    @isTest
+    static void testBeforeInsertSetsDefaults() {
+        // Arrange
+        Asset a = new Asset(
+            Name = null,
+            Status = null,
+            AccountId = null
         );
 
         Test.startTest();
-        insert ast;
+        insert a;
         Test.stopTest();
 
-        // Optional: Query to confirm the record was inserted
-        Asset insertedAsset = [SELECT Id, AccountId FROM Asset WHERE Id = :ast.Id];
-        System.assertNotEquals(null, insertedAsset);
+        // Assert
+        Asset inserted = [SELECT Id, Name, Status FROM Asset WHERE Id = :a.Id];
+        System.assertEquals('New Asset', inserted.Name, 'Name should default to New Asset');
+        System.assertEquals('Active', inserted.Status, 'Status should default to Active');
     }
 }
