@@ -1,3 +1,5 @@
 trigger CaseTrigger on Case (before insert, before update) {
-    CaseTriggerHandler.handleCases(Trigger.new, Trigger.oldMap);
+    if (Trigger.isBefore && Trigger.isInsert) {
+        CaseTriggerHandler.beforeInsert(Trigger.new);
+    }
 }

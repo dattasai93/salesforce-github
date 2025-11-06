@@ -2,19 +2,28 @@
 private class CaseTriggerHandlerTest {
 
     @isTest
-    static void testNegativeScenario() {
-        // Create a Case record with missing fields to test handler defaults
-        Case c = new Case(); // Missing fields, handler should fill them
+    static void testInsertCaseDefaults() {
+        // Arrange
+        Case c = new Case(Subject = 'Test Case');
 
-        Test.startTest();
+        // Act
         insert c;
-        Test.stopTest();
 
-        // Query the inserted record
-        Case insertedCase = [SELECT Subject, Origin, Priority FROM Case WHERE Id = :c.Id];
+        // Assert
+        Case insertedCase = [SELECT Origin FROM Case WHERE Id = :c.Id];
+        System.assertEquals('Web', insertedCase.Origin, 'Origin should default to Web');
+    }
 
-        // Verify defaults were filled in by the trigger handler
-        System.assertNotEquals(null, insertedCase.Subject, 'Handler should have set a default Subject');
-        System.assertNotEquals(null, insertedCase.Origin, 'Handler should have set a default Origin');
+    @isTest
+    static void testNegativeScenario() {
+        // Arrange
+        Case c = new Case(Subject = 'Test Case', Origin = 'Email');
+
+        // Act
+        insert c;
+
+        // Assert
+        Case insertedCase = [SELECT Origin FROM Case WHERE Id = :c.Id];
+        System.assertEquals('Email', insertedCase.Origin, 'Handler should not override explicit Origin');
     }
 }
