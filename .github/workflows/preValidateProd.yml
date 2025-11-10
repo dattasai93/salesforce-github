@@ -1,0 +1,21 @@
+name: Pre Validate to Production Org
+run-name: ${{ github.actor }} is Running the Github Actions
+on: 
+  pull_request:
+    types: [opened, edited, closed]
+    branches:
+      - main
+    paths:
+      - 'force-app/**'
+  
+jobs:
+  build-and-deploy:
+    name: Pre Validate to Production
+    uses: "./.github/workflows/template.yml"
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    with:
+      environment: production
+    secrets: inherit

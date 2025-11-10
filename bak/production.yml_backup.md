@@ -1,4 +1,4 @@
-name: Github Actions Demo by TrainerUser
+name: Production Pipeline
 run-name: Dattasai is Running the Github Actions
 on: [push, pull_request ]
 jobs:

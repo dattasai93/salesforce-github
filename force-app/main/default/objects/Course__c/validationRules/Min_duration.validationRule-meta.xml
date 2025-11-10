@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Min_duration</fullName>
+    <active>true</active>
+    <description>Course duration less than 10 hours is not permitted</description>
+    <errorConditionFormula>No_of_Hours__c  &lt; 10</errorConditionFormula>
+    <errorDisplayField>No_of_Hours__c</errorDisplayField>
+    <errorMessage>The Course is too short.</errorMessage>
+</ValidationRule>
