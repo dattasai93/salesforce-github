@@ -7,11 +7,11 @@ public with sharing class AssetTriggerHandler {
     }
 
     private static void handleBeforeInsert(List<Asset> newAssets) {
-        // Fetch a default Account to assign if AccountId is missing
+        // Fetch default Account once (bulk-safe)
         Account defaultAcc = [SELECT Id FROM Account LIMIT 1];
 
         for (Asset a : newAssets) {
-            // Default Status
+            // Default Status if not provided
             if (a.Status == null) {
                 a.Status = 'Active';
             }
