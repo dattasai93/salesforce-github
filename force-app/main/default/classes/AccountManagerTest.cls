@@ -1,32 +1,42 @@
-@IsTest
-private class AccountManagerTest {
+@isTest
+public class AccountManagerTest {
 
-    @IsTest
+    @isTest
     static void testUpdateAccountName() {
-        Account acc = new Account(Name='Old Name');
-        insert acc;
+        // 1. Setup Test Data
+        Account testAccount = new Account(Name = 'Test Account');
+        insert testAccount;
 
-        Test.startTest();
-        AccountManager.updateAccountName(acc);
-        Test.stopTest();
+        // 2. Call the method to be tested
+        AccountManager.updateAccountName(testAccount.Id, 'Updated Account Name');
 
-        acc = [SELECT Id, Name FROM Account WHERE Id=:acc.Id];
-        System.assertEquals('Updated Name', acc.Name, 'Account name should be updated by method');
+        // 3. Verify the results
+        Account updatedAccount = [SELECT Name FROM Account WHERE Id = :testAccount.Id];
+        System.assertEquals('Updated Account Name', updatedAccount.Name, 'Account name should be updated');
     }
 
-    @IsTest
+    @isTest
     static void testUpdateAccountName_NullId() {
-        Account a = new Account(); // Id is null
-
-        Test.startTest();
+        // Test case where accountId is null
         try {
-            AccountManager.updateAccountName(a);
-            // If your code handles null Id gracefully, assert true
-            System.assert(true, 'Method handled null Id gracefully');
-        } catch (NullPointerException e) {
-            // If you want to enforce exception, remove this block
-            System.assert(false, 'No exception should be thrown for null Id');
+            AccountManager.updateAccountName(null, 'New Name');
+            System.assert(false, 'Expected IllegalArgumentException due to null Id');
+        } catch (IllegalArgumentException e) {
+            System.assert(e.getMessage().contains('Account Id cannot be null'), 'Expected exception message');
         }
-        Test.stopTest();
+    }
+
+    @isTest
+    static void testUpdateAccountName_BlankName() {
+        // Test case where newName is blank
+        Account testAccount = new Account(Name = 'Test Account');
+        insert testAccount;
+
+        try {
+            AccountManager.updateAccountName(testAccount.Id, '');
+            System.assert(false, 'Expected IllegalArgumentException due to blank name');
+        } catch (IllegalArgumentException e) {
+            System.assert(e.getMessage().contains('New name cannot be blank'), 'Expected exception message');
+        }
     }
 }
