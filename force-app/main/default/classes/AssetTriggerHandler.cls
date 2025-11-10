@@ -7,12 +7,18 @@ public with sharing class AssetTriggerHandler {
     }
 
     private static void handleBeforeInsert(List<Asset> newAssets) {
+        // Fetch a default Account to assign if AccountId is missing
+        Account defaultAcc = [SELECT Id FROM Account LIMIT 1];
+
         for (Asset a : newAssets) {
+            // Default Status
             if (a.Status == null) {
                 a.Status = 'Active';
             }
-            if (a.Name == null) {
-                a.Name = 'New Asset';
+
+            // Ensure either AccountId or ContactId exists
+            if (a.AccountId == null && a.ContactId == null) {
+                a.AccountId = defaultAcc.Id;
             }
         }
     }
