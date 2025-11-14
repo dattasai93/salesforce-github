@@ -196,7 +196,21 @@ jobs:
           fi
 
       - name: Validate the Code to Salesforce
-        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed'}}
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && env.apex_classes != '' }}
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event.action }}
+          echo ${{ github.event.pull_request.merged }}
+
+          if grep -q '<types>' delta/package/package.xml ; then
+          echo "---- validating added and modified metadata ----"
+          sf project deploy validate --source-dir delta/force-app --target-org cicd-org --test-level RunSpecifiedTests --tests ${{ env.apex_classes }}
+          else
+          echo "---- No changes to validate ----"
+          fi
+
+      - name: Validate the Code to Salesforce
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' && (env.apex_classes == '' or env.apex_classes == null) }}
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
@@ -207,7 +221,7 @@ jobs:
           sf project deploy validate --source-dir delta/force-app --target-org cicd-org
           else
           echo "---- No changes to validate ----"
-          fi
+          fi      
 
       - name: Deploy Pre Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
