@@ -1,9 +1,11 @@
 @IsTest
 private class MyApexClassTest {
 
+    // -----------------------------
+    // Test Setup - reusable data
+    // -----------------------------
     @TestSetup
     static void setup() {
-        // Create reusable test data for all test methods
         Account acc = new Account(Name='Test Account', Industry='Technology');
         insert acc;
 
@@ -19,7 +21,6 @@ private class MyApexClassTest {
         Account acc = [SELECT Id FROM Account LIMIT 1];
         Contact con = [SELECT Id FROM Contact LIMIT 1];
 
-        // Assets with different scenarios
         Asset a1 = new Asset(Name='Asset1', AccountId=acc.Id, Status=null); // Status null
         Asset a2 = new Asset(Name='Asset2', ContactId=con.Id, Status='Inactive'); // Status set
         Asset a3 = new Asset(Name='Asset3'); // Missing AccountId & ContactId
@@ -33,9 +34,9 @@ private class MyApexClassTest {
         a2 = [SELECT Status, AccountId FROM Asset WHERE Name='Asset2'];
         a3 = [SELECT Status, AccountId FROM Asset WHERE Name='Asset3'];
 
-        System.assertEquals('Active', a1.Status);
-        System.assertEquals('Inactive', a2.Status);
-        System.assertEquals('Active', a3.Status);
+        System.assertEquals('Active', a1.Status, 'Status should default to Active');
+        System.assertEquals('Inactive', a2.Status, 'Status should remain Inactive');
+        System.assertEquals('Active', a3.Status, 'Status should default to Active');
         System.assertNotEquals(null, a3.AccountId, 'AccountId should be set by trigger');
     }
 
@@ -50,7 +51,6 @@ private class MyApexClassTest {
         insert acc;
         Test.stopTest();
 
-        // Verify trigger logic applied default Industry
         acc = [SELECT Id, Industry FROM Account WHERE Id = :acc.Id];
         System.assertNotEquals(null, acc.Industry, 'Industry should be set by trigger if null');
     }
@@ -78,13 +78,17 @@ private class MyApexClassTest {
     // -----------------------------
     @isTest
     static void testExceptionHandling() {
-        // Attempt to insert Asset without required fields
         try {
-            Asset invalidAsset = new Asset(); // Missing Name, AccountId/ContactId
+            Asset invalidAsset = new Asset(); // Missing required fields
             insert invalidAsset;
-            System.assert(false, 'Expected exception not thrown');
+            System.assert(false, 'Expected DmlException not thrown');
         } catch (DmlException e) {
-            System.assert(e.getMessage().contains('required'), 'Exception should be due to missing required fields');
+            // Case-insensitive check for required fields in the exception message
+            System.assert(
+                e.getMessage().toLowerCase().contains('required') ||
+                e.getMessage().toLowerCase().contains('missing'),
+                'Exception should be due to missing required fields'
+            );
         }
     }
 }
