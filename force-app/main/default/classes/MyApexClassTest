@@ -3,36 +3,35 @@ private class MyApexClassTest {
 
     @TestSetup
     static void setup() {
-        // Insert reusable test data
-        Account acc = new Account(Name='Test Account');
+        Account acc = new Account(Name = 'Test Account', Industry = 'Technology');
         insert acc;
     }
 
     @IsTest
-    static void testExceptionHandling() {
-        // Test missing required fields for Account insert
-        Account accMissingName = new Account(); // Name is missing
+    static void testCreateContact() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+        Contact con = MyApexClass.createContact(acc.Id, 'Test Contact');
 
-        try {
-            MyApexClass.someMethodThatRequiresFields(accMissingName);
-            System.assert(false, 'Exception should be thrown for missing required fields');
-        } catch (MyApexClass.CustomException e) {
-            // Assert that exception message mentions required field
-            System.assert(
-                e.getMessage().contains('required'),
-                'Unexpected exception message: ' + e.getMessage()
-            );
-        }
+        System.assertNotEquals(null, con.Id, 'Contact should be inserted');
+        System.assertEquals(acc.Id, con.AccountId, 'Contact AccountId should match');
+    }
 
-        // Optional: also test null account input
-        try {
-            MyApexClass.someMethodThatRequiresFields(null);
-            System.assert(false, 'Exception should be thrown for null input');
-        } catch (MyApexClass.CustomException e) {
-            System.assert(
-                e.getMessage().contains('required'),
-                'Unexpected exception message: ' + e.getMessage()
-            );
-        }
+    @IsTest
+    static void testUpdateAccountIndustry() {
+        Account acc = [SELECT Id, Industry FROM Account LIMIT 1];
+        Account updatedAcc = MyApexClass.updateAccountIndustry(acc.Id, 'Finance');
+
+        System.assertEquals('Finance', updatedAcc.Industry, 'Account Industry should be updated');
+    }
+
+    @IsTest
+    static void testGetContactsForAccount() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+        MyApexClass.createContact(acc.Id, 'Contact 1');
+        MyApexClass.createContact(acc.Id, 'Contact 2');
+
+        List<Contact> contacts = MyApexClass.getContactsForAccount(acc.Id);
+
+        System.assertEquals(2, contacts.size(), 'Should return 2 contacts');
     }
 }
