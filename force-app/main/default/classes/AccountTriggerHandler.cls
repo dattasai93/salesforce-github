@@ -1,11 +1,19 @@
-public class AccountTriggerHandler {
-    public static void beforeInsert(List<Account> newAccounts) {
-        for (Account acc : newAccounts) {
-            if (acc.Industry == 'Technology') {
-                acc.Active__c = true;
-            } else {
-                acc.Active__c = false;
-            }
+private static void handleBeforeInsert(List<Asset> newAssets) {
+    // Filter Assets that need a default Account
+    List<Asset> assetsNeedingAccount = new List<Asset>();
+    for (Asset a : newAssets) {
+        if (a.AccountId == null && a.ContactId == null) {
+            assetsNeedingAccount.add(a);
+        }
+        if (a.Status == null) {
+            a.Status = 'Active';
+        }
+    }
+
+    if (!assetsNeedingAccount.isEmpty()) {
+        Account defaultAcc = [SELECT Id FROM Account LIMIT 1];
+        for (Asset a : assetsNeedingAccount) {
+            a.AccountId = defaultAcc.Id;
         }
     }
 }
