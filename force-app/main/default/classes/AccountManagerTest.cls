@@ -1,24 +1,42 @@
 @isTest
-private class AccountManagerTest {
+public class AccountManagerTest {
 
     @isTest
-    static void testUpdateAccountName_validId() {
-        Account acc = new Account(Name = 'Old Name');
-        insert acc;
+    static void testUpdateAccountName() {
+        // 1. Setup Test Data
+        Account testAccount = new Account(Name = 'Test Account');
+        insert testAccount;
 
-        Test.startTest();
-        AccountManager.updateAccountName(acc.Id, 'New Name');
-        Test.stopTest();
+        // 2. Call the method to be tested
+        AccountManager.updateAccountName(testAccount.Id, 'Updated Account Name');
 
-        Account updatedAcc = [SELECT Name FROM Account WHERE Id = :acc.Id];
-        System.assertEquals('New Name', updatedAcc.Name, 'Account name should be updated');
+        // 3. Verify the results
+        Account updatedAccount = [SELECT Name FROM Account WHERE Id = :testAccount.Id];
+        System.assertEquals('Updated Account Name', updatedAccount.Name, 'Account name should be updated');
     }
 
     @isTest
-    static void testUpdateAccountName_nullId() {
-        Test.startTest();
-        AccountManager.updateAccountName(null, 'New Name');
-        Test.stopTest();
-        System.assert(true, 'No exception should be thrown when accountId is null');
+    static void testUpdateAccountName_NullId() {
+        // Test case where accountId is null
+        try {
+            AccountManager.updateAccountName(null, 'New Name');
+            System.assert(false, 'Expected IllegalArgumentException due to null Id');
+        } catch (IllegalArgumentException e) {
+            System.assert(e.getMessage().contains('Account Id cannot be null'), 'Expected exception message');
+        }
+    }
+
+    @isTest
+    static void testUpdateAccountName_BlankName() {
+        // Test case where newName is blank
+        Account testAccount = new Account(Name = 'Test Account');
+        insert testAccount;
+
+        try {
+            AccountManager.updateAccountName(testAccount.Id, '');
+            System.assert(false, 'Expected IllegalArgumentException due to blank name');
+        } catch (IllegalArgumentException e) {
+            System.assert(e.getMessage().contains('New name cannot be blank'), 'Expected exception message');
+        }
     }
 }

@@ -1,17 +1,18 @@
-public with sharing class AccountManager {
+public class AccountManager {
+    
     public static void updateAccountName(Id accountId, String newName) {
+        // Handle null input
         if (accountId == null) {
-            System.debug('⚠️ Account ID is null — skipping update');
-            return;
+            throw new IllegalArgumentException('Account Id cannot be null');
+        }
+        if (String.isBlank(newName)) {
+            throw new IllegalArgumentException('New name cannot be blank');
         }
 
-        List<Account> accList = [SELECT Id, Name FROM Account WHERE Id = :accountId LIMIT 1];
-        if (accList.isEmpty()) {
-            System.debug('⚠️ No Account found for ID: ' + accountId);
-            return;
-        }
-
-        Account acc = accList[0];
+        // Query the account
+        Account acc = [SELECT Id, Name FROM Account WHERE Id = :accountId];
+        
+        // Update name
         acc.Name = newName;
         update acc;
     }
