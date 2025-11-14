@@ -1,21 +1,25 @@
 public with sharing class MyApexClass {
-
-    // Example: Create an Account with some default logic
-    public static void createAccount(Account acc) {
-        if (String.isBlank(acc.Name)) {
-            throw new CustomException('Account Name is required');
-        }
-        insert acc;
+    
+    // Method to create a Contact for a given Account
+    public static Contact createContact(Id accountId, String lastName) {
+        Contact con = new Contact(
+            LastName = lastName,
+            AccountId = accountId
+        );
+        insert con;
+        return con;
     }
-
-    // Example: Update Account Industry if blank
-    public static void updateAccountIndustry(Account acc) {
-        if (String.isBlank(acc.Industry)) {
-            acc.Industry = 'Other';
-        }
+    
+    // Method to update Account Industry
+    public static Account updateAccountIndustry(Id accountId, String industry) {
+        Account acc = [SELECT Id, Industry FROM Account WHERE Id = :accountId LIMIT 1];
+        acc.Industry = industry;
         update acc;
+        return acc;
     }
-
-    // Example: Custom exception class
-    public class CustomException extends Exception {}
+    
+    // Method to get Contacts for an Account
+    public static List<Contact> getContactsForAccount(Id accountId) {
+        return [SELECT Id, FirstName, LastName FROM Contact WHERE AccountId = :accountId];
+    }
 }
