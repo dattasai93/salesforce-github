@@ -1,6 +1,5 @@
 @IsTest
 private class MyApexClassTest {
-
     @TestSetup
     static void setup() {
         Account acc = new Account(Name = 'Test Account', Industry = 'Technology');
