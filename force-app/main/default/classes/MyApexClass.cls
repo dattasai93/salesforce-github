@@ -16,7 +16,6 @@ public with sharing class MyApexClass {
         acc.Industry = industry;
         update acc;
         return acc;
-<<<<<<< HEAD
     }
     
     // Method to get Contacts for an Account
@@ -24,12 +23,3 @@ public with sharing class MyApexClass {
         return [SELECT Id, FirstName, LastName FROM Contact WHERE AccountId = :accountId];
     }
 }
-=======
-    }
-    
-    // Method to get Contacts for an Account
-    public static List<Contact> getContactsForAccount(Id accountId) {
-        return [SELECT Id, FirstName, LastName FROM Contact WHERE AccountId = :accountId];
-    }
-}
->>>>>>> caf611b9e59fd41ea1400c9aec0df301cdcfefc6
