@@ -29,4 +29,4 @@ Please also list any relevant details for your test configuration
 - [ ] Any dependent changes have been merged and published in downstream modules
 ### Update the Test Class to run
 Add the test classes comma separated or remove the line if you do not want the test to be run
-APEX TEST CLASS TO RUN [RUN:OpportunityTriggerHandlerTest,LeadTriggerHandlerTest, ContractTriggerHandlerTest]
+APEX TEST CLASS TO RUN [RUN:OpportunityTriggerHandlerTest LeadTriggerHandlerTest  ContractTriggerHandlerTest]
