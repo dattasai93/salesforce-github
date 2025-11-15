@@ -235,7 +235,7 @@ jobs:
           fi
       - name: Deploy
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }} 
-        run: 
+        run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
