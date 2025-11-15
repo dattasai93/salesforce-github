@@ -227,7 +227,7 @@ jobs:
       - name: Deploy Pre Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
-          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
+          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml; then
           echo "---- deploying added and modified metadata ----"
           sf project deploy start --target-org cicd-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
           else
@@ -240,7 +240,7 @@ jobs:
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
           
-          if grep -q '<types>' delta/package/package.xml ; then
+          if grep -q '<types>' delta/package/package.xml; then
           echo "---- Deploying added and modified metadata ----"
           sf project deploy start --source-dir delta/force-app --target-org cicd-org
           else
