@@ -141,6 +141,7 @@ jobs:
         run: |
           echo "${{ github.event.pull_request.body }}" >> pr_body.txt
           python PRBODY_TESTCLASS.py > output.txt
+          cat output.txt
           echo "apex_classes=$(cat output.txt)" >> $GITHUB_ENV
 
       - name: Check if apex_classes has a value
