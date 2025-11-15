@@ -2,67 +2,19 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
 		<members>*</members>
-		<name>ApexClass</name>
+		<name>ContentAsset</name>
 	</types>
 	<types>
 		<members>*</members>
-		<name>ApexComponent</name>
+		<name>CustomSite</name>
 	</types>
 	<types>
 		<members>*</members>
-		<name>ApexPage</name>
+		<name>ExperienceBundle</name>
 	</types>
 	<types>
 		<members>*</members>
-		<name>ApexTestSuite</name>
-	</types>
-	<types>
-		<members>*</members>
-		<name>ApexTrigger</name>
-	</types>
-	<types>
-		<members>*</members>
-		<name>AuraDefinitionBundle</name>
-	</types>
-	<types>
-		<members>Course__c</members>
-		<members>Department__c</members>
-		<members>Employee__c</members>
-		<members>Purchase__c</members>
-		<members>Student__c</members>
-		<members>Trainer__c</members>
-		<name>CustomObject</name>
-	</types>
-	<types>
-		<members>*</members>
-		<name>Flow</name>
-	</types>
-	<types>
-		<members>Course__c-Course Layout</members>
-		<members>Department__c-Department Layout</members>
-		<members>Employee__c-Employee Layout</members>
-		<members>Purchase__c-Purchase Layout</members>
-		<members>Student__c-Student Layout</members>
-		<members>Trainer__c-Trainer Layout</members>
-		<name>Layout</name>
-	</types>
-	<types>
-		<members>*</members>
-		<name>LightningComponentBundle</name>
-	</types>
-	<types>
-		<members>DeploymentUser</members>
-		<members>PS1</members>
-		<name>PermissionSet</name>
-	</types>
-	<types>
-		<members>My Own Profile1</members>
-		<members>My Sys Admin</members>
-		<name>Profile</name>
-	</types>
-	<types>
-		<members>*</members>
-		<name>StaticResource</name>
+		<name>Network</name>
 	</types>
 	<version>65.0</version>
 </Package>
