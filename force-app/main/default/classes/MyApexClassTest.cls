@@ -22,6 +22,20 @@ private class MyApexClassTest {
         Account updatedAcc = MyApexClass.updateAccountIndustry(acc.Id, 'Finance');
 
         System.assertEquals('Finance', updatedAcc.Industry, 'Account Industry should be updated');
+<<<<<<< HEAD
+=======
+    }
+
+    @IsTest
+    static void testGetContactsForAccount() {
+        Account acc = [SELECT Id FROM Account LIMIT 1];
+        MyApexClass.createContact(acc.Id, 'Contact 1');
+        MyApexClass.createContact(acc.Id, 'Contact 2');
+
+        List<Contact> contacts = MyApexClass.getContactsForAccount(acc.Id);
+
+        System.assertEquals(2, contacts.size(), 'Should return 2 contacts');
+>>>>>>> caf611b9e59fd41ea1400c9aec0df301cdcfefc6
     }
 
     @IsTest

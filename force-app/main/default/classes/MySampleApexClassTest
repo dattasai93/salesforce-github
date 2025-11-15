@@ -1,0 +1,9 @@
+@IsTest
+private class MySampleApexClassTest {
+    @IsTest
+    static void testConstructor() {
+        // Instantiate the class to cover the constructor
+        MySampleApexClass obj = new MySampleApexClass();
+        System.assertNotEquals(null, obj, 'Object should be created');
+    }
+}
