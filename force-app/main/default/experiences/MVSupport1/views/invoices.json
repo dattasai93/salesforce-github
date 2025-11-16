@@ -1,0 +1,70 @@
+{
+  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "componentName" : "siteforce:dynamicLayout",
+  "dataProviders" : [ ],
+  "id" : "1f286508-98e6-4826-9d18-7b0a578a7a63",
+  "label" : "invoices",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "background" : "background: rgba(0,0,0,0)",
+        "backgroundOverlay" : "rgba(0,0,0,0.5)",
+        "contentAreaWidth" : 100,
+        "sectionConfig" : {
+          "UUID" : "1430b18e-51f1-405e-92af-96fbdbb3483f",
+          "columns" : [ {
+            "UUID" : "38556d85-25f4-4f2f-ad04-c5c6c8547217",
+            "columnKey" : "1",
+            "columnName" : "Column 1",
+            "columnWidth" : "12",
+            "seedComponents" : [ ]
+          } ]
+        },
+        "sectionHeight" : 300
+      },
+      "componentName" : "forceCommunity:section",
+      "id" : "1430b18e-51f1-405e-92af-96fbdbb3483f",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "richTextValue" : "<p>Use this HTML Editor to add your own markup.</p>"
+          },
+          "componentName" : "forceCommunity:htmlBlock",
+          "id" : "a638e50a-53c2-4a76-8c76-ef09d518e6da",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "38556d85-25f4-4f2f-ad04-c5c6c8547217",
+        "regionLabel" : "Column 1",
+        "regionName" : "1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "6017d2d9-194a-4ee8-8fce-2adfe09e361f",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "invoices"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "c2548062-d1d5-47a3-ba6e-904bd2d1958b",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "24c9cad7-5658-4c96-a541-f8a30cab2219",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-invoices"
+}
