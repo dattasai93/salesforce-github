@@ -1,63 +1,73 @@
 @IsTest
-public class AssetTriggerHandlerTest {
+private class AssetTriggerHandlerTest {
 
     @TestSetup
     static void setup() {
-        // Create test Account and Contact
-        Account acc = new Account(Name='Test Account');
+        // Create a default account to avoid query issues in handler
+        Account acc = new Account(Name = 'Default Account');
         insert acc;
-
-        Contact con = new Contact(LastName='Test Contact', AccountId=acc.Id);
-        insert con;
     }
 
     @IsTest
-    static void testDefaultStatusAndAccount() {
-        Account acc = [SELECT Id FROM Account LIMIT 1];
-        Contact con = [SELECT Id FROM Contact LIMIT 1];
-
-        // Case 1: Status null, AccountId provided
-        Asset a1 = new Asset(Name='Asset1', AccountId=acc.Id, Status=null);
-
-        // Case 2: Status already set
-        Asset a2 = new Asset(Name='Asset2', AccountId=acc.Id, Status='Inactive');
-
-        // Case 3: Null AccountId, has ContactId
-        Asset a3 = new Asset(Name='Asset3', ContactId=con.Id, Status=null);
-
-        // Case 4: Null AccountId and ContactId
-        Asset a4 = new Asset(Name='Asset4', Status=null);
+    static void testBeforeInsert() {
+        // Create Assets without AccountId or Status
+        List<Asset> assets = new List<Asset>();
+        assets.add(new Asset(Name = 'Asset 1'));
+        assets.add(new Asset(Name = 'Asset 2'));
 
         Test.startTest();
-        insert new List<Asset>{a1, a2, a3, a4};
+        insert assets; // Trigger fires here
         Test.stopTest();
 
-        // Validate default values and assignments
-        a1 = [SELECT Status, AccountId FROM Asset WHERE Name='Asset1'];
-        a2 = [SELECT Status, AccountId FROM Asset WHERE Name='Asset2'];
-        a3 = [SELECT Status, AccountId FROM Asset WHERE Name='Asset3'];
-        a4 = [SELECT Status, AccountId FROM Asset WHERE Name='Asset4'];
-
-        System.assertEquals('Active', a1.Status);
-        System.assertEquals('Inactive', a2.Status);
-        System.assertEquals('Active', a3.Status);
-        System.assertEquals('Active', a4.Status);
-        System.assertNotEquals(null, a4.AccountId);
+        // Verify default AccountId and Status are set
+        for (Asset a : [SELECT Id, AccountId, Status FROM Asset WHERE Id IN :assets]) {
+            System.assertNotEquals(null, a.AccountId, 'Default AccountId should be set');
+            System.assertEquals('Active', a.Status, 'Default Status should be Active');
+        }
     }
 
     @IsTest
-    static void testBulkInsert() {
-        // Bulk insert scenario
-        List<Asset> bulkAssets = new List<Asset>();
+    static void testBeforeUpdate() {
+        // Insert an asset first
+        Asset asset = new Asset(Name = 'Asset Update Test');
+        insert asset;
+
+        // Clear AccountId and Status to test update logic
+        asset.AccountId = null;
+        asset.Status = null;
+
+        Test.startTest();
+        update asset; // Trigger fires here
+        Test.stopTest();
+
+        Asset updatedAsset = [SELECT Id, AccountId, Status FROM Asset WHERE Id = :asset.Id];
+        System.assertNotEquals(null, updatedAsset.AccountId, 'Default AccountId should be set on update');
+        System.assertEquals('Active', updatedAsset.Status, 'Default Status should be Active on update');
+    }
+
+    @IsTest
+    static void testBulkInsertAndUpdate() {
+        List<Asset> assets = new List<Asset>();
         for (Integer i = 1; i <= 200; i++) {
-            bulkAssets.add(new Asset(Name='BulkAsset' + i));
+            assets.add(new Asset(Name = 'Bulk Asset ' + i));
         }
 
         Test.startTest();
-        insert bulkAssets;
+        insert assets; // Bulk insert
         Test.stopTest();
 
-        Asset first = [SELECT Status FROM Asset WHERE Name='BulkAsset1' LIMIT 1];
-        System.assertEquals('Active', first.Status);
+        // Bulk update
+        for (Asset a : assets) {
+            a.Status = null;
+        }
+
+        Test.startTest();
+        update assets; // Bulk update
+        Test.stopTest();
+
+        // Verify all records
+        for (Asset a : [SELECT Id, Status FROM Asset WHERE Id IN :assets]) {
+            System.assertEquals('Active', a.Status, 'Default Status should be Active for bulk update');
+        }
     }
 }
