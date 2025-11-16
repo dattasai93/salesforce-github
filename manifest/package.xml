@@ -3,13 +3,20 @@
 	<types>
 		<members>CommunitiesLandingController</members>
 		<members>CommunitiesLandingControllerTest</members>
+		<members>CommunitiesLoginController</members>
+		<members>CommunitiesSelfRegConfirmController</members>
+		<members>CommunitiesSelfRegConfirmControllerTest</members>
 		<members>CommunitiesSelfRegController</members>
 		<members>CommunitiesSelfRegControllerTest</members>
+		<members>MicrobatchSelfRegController</members>
+		<members>MyProfilePageController</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
 		<members>CommunitiesLanding</members>
 		<members>CommunitiesSelfReg</members>
+		<members>CommunitiesSelfRegConfirm</members>
+		<members>SiteLogin</members>
 		<name>ApexPage</name>
 	</types>
 	<types>
