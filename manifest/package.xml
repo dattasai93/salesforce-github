@@ -8,28 +8,8 @@
 		<name>ApexClass</name>
 	</types>
 	<types>
-		<members>AnswersHome</members>
-		<members>BandwidthExceeded</members>
-		<members>ChangePassword</members>
 		<members>CommunitiesLanding</members>
-		<members>CommunitiesLogin</members>
 		<members>CommunitiesSelfReg</members>
-		<members>CommunitiesTemplate</members>
-		<members>Exception</members>
-		<members>FileNotFound</members>
-		<members>ForgotPassword</members>
-		<members>ForgotPasswordConfirm</members>
-		<members>IdeasHome</members>
-		<members>InMaintenance</members>
-		<members>MicrobatchSelfReg</members>
-		<members>MyProfilePage</members>
-		<members>SiteLogin</members>
-		<members>SiteRegister</members>
-		<members>SiteRegisterConfirm</members>
-		<members>SiteTemplate</members>
-		<members>StdExceptionTemplate</members>
-		<members>Unauthorized</members>
-		<members>UnderConstruction</members>
 		<name>ApexPage</name>
 	</types>
 	<types>
