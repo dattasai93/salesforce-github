@@ -23,9 +23,8 @@
     <redirectToCustomDomain>false</redirectToCustomDomain>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
-    <serverIsDown>SNA_GnlCl_sf_default_cdn_MVSupport1</serverIsDown>
-    <siteAdmin>dattasai93-pvy3@force.com</siteAdmin>
-    <siteGuestRecordDefaultOwner>dattasai93-pvy3@force.com</siteGuestRecordDefaultOwner>
+    <siteAdmin>dattasai93298@agentforce.com.uat</siteAdmin>
+    <siteGuestRecordDefaultOwner>dattasai93298@agentforce.com.uat</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <urlPathPrefix>helpportal</urlPathPrefix>
 </CustomSite>

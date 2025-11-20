@@ -1,9 +1,9 @@
 {
-  "activeViewId" : "e72e622c-e74c-4216-a273-99db58b38db2",
-  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "activeViewId" : "6a870693-0990-4f0b-ab1f-ab20703ff20e",
+  "appPageId" : "e21aca1f-6dbf-4d35-bd51-d3f2cdd7268b",
   "configurationTags" : [ ],
   "devName" : "Report_List",
-  "id" : "145da9f6-f67e-444f-b548-4718625d1f75",
+  "id" : "9f28c737-d422-4f23-a69d-8b0c5e1eeb82",
   "label" : "Report List",
   "routeType" : "list-00O",
   "type" : "route",

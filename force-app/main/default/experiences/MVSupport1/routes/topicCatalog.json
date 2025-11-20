@@ -1,9 +1,9 @@
 {
-  "activeViewId" : "de7498a9-a70d-4d43-a73c-37753281f582",
-  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "activeViewId" : "80023e13-31bc-4d6c-85b3-92cb12c8c72d",
+  "appPageId" : "e21aca1f-6dbf-4d35-bd51-d3f2cdd7268b",
   "configurationTags" : [ ],
   "devName" : "Topic_Catalog",
-  "id" : "3a168939-021a-443a-bd01-bd3e0b322e7f",
+  "id" : "03fd0047-bad7-42fd-a5af-8215fb879039",
   "label" : "Topic Catalog",
   "pageAccess" : "UseParent",
   "routeType" : "topic-catalog",

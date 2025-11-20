@@ -1,9 +1,9 @@
 {
-  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "appPageId" : "e21aca1f-6dbf-4d35-bd51-d3f2cdd7268b",
   "componentName" : "siteforce:dynamicLayout",
   "dataProviders" : [ ],
-  "id" : "1f286508-98e6-4826-9d18-7b0a578a7a63",
-  "label" : "invoices",
+  "id" : "11cac27c-1939-4f07-9ee7-879fd60df09a",
+  "label" : "Invoices",
   "regions" : [ {
     "components" : [ {
       "componentAttributes" : {
@@ -11,9 +11,9 @@
         "backgroundOverlay" : "rgba(0,0,0,0.5)",
         "contentAreaWidth" : 100,
         "sectionConfig" : {
-          "UUID" : "1430b18e-51f1-405e-92af-96fbdbb3483f",
+          "UUID" : "c4990c27-81b4-4110-8b65-ed0592587b50",
           "columns" : [ {
-            "UUID" : "38556d85-25f4-4f2f-ad04-c5c6c8547217",
+            "UUID" : "6acdaccb-f9d4-4381-b1cb-53c15aedce21",
             "columnKey" : "1",
             "columnName" : "Column 1",
             "columnWidth" : "12",
@@ -23,19 +23,9 @@
         "sectionHeight" : 300
       },
       "componentName" : "forceCommunity:section",
-      "id" : "1430b18e-51f1-405e-92af-96fbdbb3483f",
+      "id" : "c4990c27-81b4-4110-8b65-ed0592587b50",
       "regions" : [ {
-        "components" : [ {
-          "componentAttributes" : {
-            "richTextValue" : "<p>Use this HTML Editor to add your own markup.</p>"
-          },
-          "componentName" : "forceCommunity:htmlBlock",
-          "id" : "a638e50a-53c2-4a76-8c76-ef09d518e6da",
-          "renderPriority" : "NEUTRAL",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
-        "id" : "38556d85-25f4-4f2f-ad04-c5c6c8547217",
+        "id" : "6acdaccb-f9d4-4381-b1cb-53c15aedce21",
         "regionLabel" : "Column 1",
         "regionName" : "1",
         "renditionMap" : { },
@@ -45,7 +35,7 @@
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "6017d2d9-194a-4ee8-8fce-2adfe09e361f",
+    "id" : "d3023059-0df8-461f-9797-d45c6981e681",
     "regionName" : "content",
     "type" : "region"
   }, {
@@ -53,14 +43,14 @@
       "componentAttributes" : {
         "customHeadTags" : "",
         "description" : "",
-        "title" : "invoices"
+        "title" : "Invoices"
       },
       "componentName" : "forceCommunity:seoAssistant",
-      "id" : "c2548062-d1d5-47a3-ba6e-904bd2d1958b",
+      "id" : "71e0cfd0-94a8-4310-8494-e71e2e24cae8",
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "24c9cad7-5658-4c96-a541-f8a30cab2219",
+    "id" : "bc599d8f-cf80-4efb-884c-1d0f4ca21363",
     "regionName" : "sfdcHiddenRegion",
     "type" : "region"
   } ],

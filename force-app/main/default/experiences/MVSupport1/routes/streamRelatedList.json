@@ -1,9 +1,9 @@
 {
-  "activeViewId" : "12445a6e-424d-4bad-89fc-ebb88fd4b739",
-  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "activeViewId" : "6dc5e3c4-f8dc-4f87-976d-6433ef780dbd",
+  "appPageId" : "e21aca1f-6dbf-4d35-bd51-d3f2cdd7268b",
   "configurationTags" : [ ],
   "devName" : "Stream_Related_List",
-  "id" : "d8a19259-4cba-42b5-bf65-9a8fa2da4e1c",
+  "id" : "48c175b8-dc5f-4a7e-8954-159f8dec30b3",
   "label" : "Stream Related List",
   "routeType" : "relatedlist-0Fq",
   "type" : "route",

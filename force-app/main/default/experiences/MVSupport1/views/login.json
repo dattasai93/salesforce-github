@@ -1,14 +1,14 @@
 {
-  "appPageId" : "333ebc2a-1233-4a3e-98b3-c6f4f97328bf",
+  "appPageId" : "ec5fbe19-0006-44c8-98fc-3a38ba6b3b63",
   "componentName" : "siteforce:sldsOneColLayout",
   "dataProviders" : [ ],
-  "id" : "4d36534a-b022-4629-96bc-e7700219b1c1",
+  "id" : "abcc9ada-071e-4c33-b6f9-ec2760b35c1c",
   "label" : "Login",
   "regions" : [ {
     "components" : [ {
       "componentAttributes" : { },
       "componentName" : "salesforceIdentity:communityLogo2",
-      "id" : "b2a51654-850e-4d96-bc4d-6d3b79fed514",
+      "id" : "245fac53-51aa-4fbd-9eb5-a9a33c3d1cee",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -24,7 +24,7 @@
         "usernameLabel" : "Username"
       },
       "componentName" : "salesforceIdentity:loginForm2",
-      "id" : "ae6c479b-e97f-42c2-b266-fba1c85cebd3",
+      "id" : "28283113-35c5-4df5-b0d6-1c784b4871b2",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -35,7 +35,7 @@
         "useCommunityDomainSso" : true
       },
       "componentName" : "salesforceIdentity:socialLogin2",
-      "id" : "482aac7e-fce3-47a9-a6b1-db3000eda347",
+      "id" : "84cb8e04-cd27-4d9d-b794-b0d5295418e3",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -44,12 +44,12 @@
         "employeeLoginLinkLabel" : "Are you an employee? Login here"
       },
       "componentName" : "salesforceIdentity:employeeLoginLink2",
-      "id" : "0c89bd00-7030-4e41-bd79-ebb7c535af35",
+      "id" : "398d56a8-1d5e-464b-a7f3-2918901b511d",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "7056b541-d4e9-44c6-8167-d92fd9991602",
+    "id" : "816dc52a-dab0-4e19-b6df-c91db822115e",
     "regionName" : "content",
     "type" : "region"
   }, {
@@ -60,11 +60,11 @@
         "title" : "Login"
       },
       "componentName" : "forceCommunity:seoAssistant",
-      "id" : "5d4806bd-63d6-451e-917f-38cb3fcabbf2",
+      "id" : "97ce0a50-1959-44cb-a9ee-9dfa9fd927aa",
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "ed881d59-7f6d-4fb1-9766-6a883e23967e",
+    "id" : "558bd2b3-bec9-422c-9511-b3af4afff719",
     "regionName" : "sfdcHiddenRegion",
     "type" : "region"
   } ],

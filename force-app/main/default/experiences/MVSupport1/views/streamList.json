@@ -1,19 +1,19 @@
 {
-  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "appPageId" : "e21aca1f-6dbf-4d35-bd51-d3f2cdd7268b",
   "componentName" : "siteforce:sldsOneColLayout",
   "dataProviders" : [ ],
-  "id" : "a7f440e9-de3d-4854-869d-342f45bf197f",
+  "id" : "638b04d1-b512-4969-a4af-0f8e93aa807b",
   "label" : "Stream List",
   "regions" : [ {
     "components" : [ {
       "componentAttributes" : { },
       "componentName" : "forceCommunity:streamList",
-      "id" : "c2869d4a-6c6b-42ae-8be6-69fb7bbb402a",
+      "id" : "b549eebc-2b9c-4896-b7a8-30a8c048a7bf",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "5e59df5d-6f44-4a8e-bf6e-90ef2c65aba7",
+    "id" : "ab29ee8d-7ee6-4e26-be05-37990751bef2",
     "regionName" : "content",
     "type" : "region"
   } ],

@@ -1,12 +1,12 @@
 {
-  "activeViewId" : "1f286508-98e6-4826-9d18-7b0a578a7a63",
-  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "activeViewId" : "11cac27c-1939-4f07-9ee7-879fd60df09a",
+  "appPageId" : "e21aca1f-6dbf-4d35-bd51-d3f2cdd7268b",
   "configurationTags" : [ ],
-  "devName" : "invoices__c",
-  "id" : "072dee42-fc3e-48d6-b6dd-90b2eeb430cb",
-  "label" : "invoices",
+  "devName" : "Invoices__c",
+  "id" : "260b75b9-cea4-4934-a8dd-83ea70671172",
+  "label" : "Invoices",
   "pageAccess" : "UseParent",
   "routeType" : "custom-invoices",
   "type" : "route",
-  "urlPrefix" : "invoices"
+  "urlPrefix" : "Invoices"
 }

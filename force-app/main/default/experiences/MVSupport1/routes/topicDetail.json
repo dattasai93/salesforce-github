@@ -1,9 +1,9 @@
 {
-  "activeViewId" : "0f0df15b-e6cf-4e79-90d5-edbb3dcf6ecd",
-  "appPageId" : "2cce680e-2c60-47c0-861e-37c1a95d2859",
+  "activeViewId" : "2b36a20b-590d-4e4a-85a1-710fbf9866ce",
+  "appPageId" : "e21aca1f-6dbf-4d35-bd51-d3f2cdd7268b",
   "configurationTags" : [ ],
   "devName" : "Topic_Detail",
-  "id" : "3aacefd7-c794-4140-a2c2-23b65aa6c055",
+  "id" : "6b2b69a6-0883-41fe-842d-4d25e752b41f",
   "label" : "Topic Detail",
   "routeType" : "topic",
   "type" : "route",
