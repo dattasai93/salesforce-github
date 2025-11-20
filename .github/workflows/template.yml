@@ -56,21 +56,22 @@ jobs:
           
       - name: npm install
         run: echo "running npm install"
-
       - name: Install Salesforce CLI
-        run: |
-          npm install -g sfdx-cli
-          sf plugins install @salesforce/sfdx-scanner
+        run: npm install @salesforce/cli --global
 
-      - name: Run Salesforce Scanner
-        run: |
-          mkdir -p reports
-          echo "Folder is Created"    
+      - name: Install Salesforce Code Analyzer
+        id: salesforce-cli-scanner
+        run: sf plugins install @salesforce/sfdx-scanner
 
-          echo "Starting HTML Scan"
-          sf scanner run --format html --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne --outfile reports/scan-reports.html
+      - name: Run Salesforce Code Analyzer Scan
+        id: code-analyzer
+        run: |
+          mkdir reports
+          echo "Folder is Created"   
+ 
+          sf scanner run --format html --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design, Best Practises, Code Style, Performance, Security, Documentation, Error Prone --outfile reports/scan-reports.html
           echo "Starting the Scanning in sarif Format"
-          sf scanner run --format sarif --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne --outfile reports/scan-reports.sarif
+          sf scanner run --format sarif --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design, Best Practises, Code Style, Performance, Security, Documentation, Error Prone --outfile reports/scan-reports.sarif
           echo "Scanning is Completed"
 
       ## Upload the report results as artifacts
