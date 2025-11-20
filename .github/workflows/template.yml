@@ -39,7 +39,7 @@ jobs:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
       TEST_LEVEL: RunSpecifiedTests
-      APEX_CLASS_RUN: OpportunityTriggerHandlerTest
+      APEX_CLASS_RUN: AccountTriggerHandlerTest
 
     steps:
       - name: "Print the Information"
@@ -56,26 +56,32 @@ jobs:
           
       - name: npm install
         run: echo "running npm install"
-
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
-      - name: Verify CLI
-        run: |
-          sf --version
-          sf plugins
-
-      - name: Install Salesforce Scanner
+      - name: Install Salesforce Code Analyzer
+        id: salesforce-cli-scanner
         run: sf plugins install @salesforce/sfdx-scanner
 
       - name: Run Salesforce Code Analyzer Scan
+        id: code-analyzer
         run: |
-          mkdir reports
+          mkdir -p reports
           echo "Folder is Created"   
  
-          sf scanner run --format html --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design,BestPractises,Code Style,Performance,Security,Documentation,ErrorProne --outfile reports/scan-reports.html
+          sf scanner run --format html \
+            --target force-app/main/default/classes \
+            --engine=pmd,pmd-appexchange \
+            --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne \
+            --outfile reports/scan-reports.html
+
           echo "Starting the Scanning in sarif Format"
-          sf scanner run --format sarif --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne --outfile reports/scan-reports.sarif
+
+          sf scanner run --format sarif \
+            --target force-app/main/default/classes \
+            --engine=pmd,pmd-appexchange \
+            --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne \
+            --outfile reports/scan-reports.sarif
           echo "Scanning is Completed"
 
       ## Upload the report results as artifacts
@@ -246,6 +252,7 @@ jobs:
           echo "---- No changes to validate ----"
           fi
  
+
 ## If the event is PR [opened, edited, reopened] - Validate the change
 ## If the PR is closed then - Deploy the change
 
