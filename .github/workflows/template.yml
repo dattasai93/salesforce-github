@@ -61,7 +61,7 @@ jobs:
 
       - name: Install Salesforce Code Analyzer
         id: salesforce-cli-scanner
-        run: sfdx plugins:install @salesforce/sfdx scanner:run
+        run: sfdx plugins:install @salesforce/sfdx-scanner
 
       - name: Run Salesforce Code Analyzer Scan
         id: code-analyzer
