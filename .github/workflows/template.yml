@@ -242,7 +242,6 @@ jobs:
           echo "---- No changes to validate ----"
           fi
  
-
 ## If the event is PR [opened, edited, reopened] - Validate the change
 ## If the PR is closed then - Deploy the change
 
