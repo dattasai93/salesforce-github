@@ -56,15 +56,13 @@ jobs:
           
       - name: npm install
         run: echo "running npm install"
-        
+
       - name: Install Salesforce CLI
-        run: npm install @salesforce/cli --global
+        run: |
+          npm install -g sfdx-cli
+          sf plugins install @salesforce/sfdx-scanner
 
-      - name: Install Salesforce CLI Scanner
-        run: sf plugins install @salesforce/sfdx-scanner
-
-      - name: Run Salesforce Code Analyzer Scan
-        id: code-analyzer
+      - name: Run Salesforce Scanner
         run: |
           mkdir -p reports
           echo "Folder is Created"    
