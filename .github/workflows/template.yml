@@ -61,7 +61,7 @@ jobs:
 
       - name: Install Salesforce Code Analyzer
         id: salesforce-cli-scanner
-        run: sf plugins install @salesforce/sfdx-scanner
+        run: sf plugins install @salesforce/code-analyzer
 
       - name: Run Salesforce Code Analyzer Scan
         id: code-analyzer
@@ -69,18 +69,20 @@ jobs:
           mkdir -p reports
           echo "Folder is Created"   
  
-          sf scanner run --format html \
+          sf code-analyzer run \
+            --format html \
             --target force-app/main/default/classes \
-            --engine=pmd,pmd-appexchange \
-            --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne \
+            --ruleset pmd,pmd-extended \
+            --ruleset design,best-practises,codestyle,performance,security,documentation,errorprone \
             --outfile reports/scan-reports.html
 
           echo "Starting the Scanning in sarif Format"
 
-          sf scanner run --format sarif \
+          sf code-analyzer run \
+            --format sarif \
             --target force-app/main/default/classes \
-            --engine=pmd,pmd-appexchange \
-            --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne \
+            --ruleset pmd,pmd-extended \
+            --ruleset design,best-practises,codestyle,performance,security,documentation,errorprone \
             --outfile reports/scan-reports.sarif
           echo "Scanning is Completed"
 
@@ -130,11 +132,11 @@ jobs:
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
 
       - name: Authorize with Salesforce org
-        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicduat-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
       - name: run the Apex Test Classes
         run: |
-          sf apex run test --target-org cicd-org --code-coverage --result-format human -d ./ --wait 10
+          sf apex run test --target-org cicduat-org --code-coverage --result-format human -d ./ --wait 10
 
       ## Check the code coverage -- START
       - name: Set up Python
