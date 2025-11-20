@@ -56,6 +56,7 @@ jobs:
           
       - name: npm install
         run: echo "running npm install"
+        
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
@@ -67,7 +68,7 @@ jobs:
         run: |
           mkdir -p reports
           echo "Folder is Created"    
-          
+
           echo "Starting HTML Scan"
           sf scanner run --format html --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne --outfile reports/scan-reports.html
           echo "Starting the Scanning in sarif Format"
