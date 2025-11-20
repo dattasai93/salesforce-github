@@ -57,7 +57,7 @@ jobs:
       - name: npm install
         run: echo "running npm install"
       - name: Install Salesforce CLI
-        uses: salesforcecli/action@v1
+        run: npm install @salesforce/cli --global
 
       - name: Install Salesforce Code Analyzer
         run: |
