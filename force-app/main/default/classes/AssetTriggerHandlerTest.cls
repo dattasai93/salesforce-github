@@ -45,29 +45,31 @@ private class AssetTriggerHandlerTest {
         System.assertEquals('Active', updatedAsset.Status, 'Default Status should be Active on update');
     }
 
-    @IsTest
-    static void testBulkInsertAndUpdate() {
-        List<Asset> assets = new List<Asset>();
-        for (Integer i = 1; i <= 200; i++) {
-            assets.add(new Asset(Name = 'Bulk Asset ' + i));
-        }
+   @IsTest
+static void testBulkInsertAndUpdate() {
+    List<Asset> assets = new List<Asset>();
+    for (Integer i = 1; i <= 200; i++) {
+        assets.add(new Asset(Name = 'Bulk Asset ' + i));
+    }
 
-        Test.startTest();
-        insert assets; // Bulk insert
-        Test.stopTest();
+    // Start a single test context
+    Test.startTest();
 
-        // Bulk update
-        for (Asset a : assets) {
-            a.Status = null;
-        }
+    insert assets; // Bulk insert
 
-        Test.startTest();
-        update assets; // Bulk update
-        Test.stopTest();
+    // Bulk update
+    for (Asset a : assets) {
+        a.Status = null;
+    }
+    update assets; // Bulk update
 
-        // Verify all records
-        for (Asset a : [SELECT Id, Status FROM Asset WHERE Id IN :assets]) {
-            System.assertEquals('Active', a.Status, 'Default Status should be Active for bulk update');
-        }
+    Test.stopTest();
+
+    // Verify all records
+    for (Asset a : [SELECT Id, Status FROM Asset WHERE Id IN :assets]) {
+        System.assertEquals('Active', a.Status, 'Default Status should be Active for bulk update');
     }
 }
+
+    }
+
