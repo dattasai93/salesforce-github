@@ -120,11 +120,11 @@ jobs:
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
 
       - name: Authorize with Salesforce org
-        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicduat-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
       - name: run the Apex Test Classes
         run: |
-          sf apex run test --target-org cicd-org --code-coverage --result-format human -d ./ --wait 10
+          sf apex run test --target-org cicduat-org --code-coverage --result-format human -d ./ --wait 10
 
       ## Check the code coverage -- START
       - name: Set up Python
@@ -227,7 +227,7 @@ jobs:
           
           if grep -q '<types>' delta/package/package.xml ; then
           echo "---- Deploying added and modified metadata ----"
-          sf project deploy start --source-dir delta/force-app --target-org cicd-org
+          sf project deploy start --source-dir delta/force-app --target-org cicduat-org
           else
           echo "---- No changes to deploy ----"
           fi
@@ -237,7 +237,7 @@ jobs:
         run: |
           if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
           echo "---- deploying Destructive Changes ----"
-          sf project deploy start --target-org cicd-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml
+          sf project deploy start --target-org cicduat-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml
           else
           echo "---- No changes to validate ----"
           fi
