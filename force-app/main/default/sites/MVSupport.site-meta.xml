@@ -23,8 +23,8 @@
     <redirectToCustomDomain>false</redirectToCustomDomain>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
-    <siteAdmin>dattasai93-pvy3@force.com.dev</siteAdmin>
-    <siteGuestRecordDefaultOwner>dattasai93-pvy3@force.com.dev</siteGuestRecordDefaultOwner>
+    <siteAdmin>dattasai93298@agentforce.com.uat</siteAdmin>
+    <siteGuestRecordDefaultOwner>dattasai93298@agentforce.com.uat</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <urlPathPrefix>helpportal</urlPathPrefix>
 </CustomSite>
