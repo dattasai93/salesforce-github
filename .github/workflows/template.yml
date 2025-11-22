@@ -222,9 +222,9 @@ jobs:
       - name: Deploy
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
-          echo "${{ github.event_name }}"
-          echo "${{ github.event.action }}"
-          echo "${{ github.event.pull_request.merged }}"
+          echo echo pull_request
+          echo echo closed
+          echo true
 
           if [ -f delta/package/package.xml ] && grep -q '<types>' delta/package/package.xml; then
             echo "---- Deploying added and modified metadata ----"
