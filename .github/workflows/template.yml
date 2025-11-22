@@ -218,6 +218,7 @@ jobs:
           else
           echo "---- No changes to validate ----"
           fi
+
       - name: Deploy
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }} 
         run: |
@@ -229,7 +230,7 @@ jobs:
             echo "---- Deploying added and modified metadata ----"
             sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test
           else
-          echo "---- No changes to deploy ----"
+            echo "---- No changes to deploy ----"
           fi
 
       - name: Deploy Post Destructive Changes
