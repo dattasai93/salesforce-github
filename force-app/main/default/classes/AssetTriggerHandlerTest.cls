@@ -32,7 +32,6 @@ private class AssetTriggerHandlerTest {
         Asset asset = new Asset(Name = 'Asset Update Test');
         insert asset;
 
-        // Clear AccountId and Status to test update logic
         asset.AccountId = null;
         asset.Status = null;
 
