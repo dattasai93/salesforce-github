@@ -29,7 +29,7 @@ node_modules/
 
 # Eslint cache
 .eslintcache
-
+delta
 # MacOS system files
 .DS_Store
 
@@ -46,3 +46,8 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+
+## Salesforce Scripts
+Scripts/
+MD_Readme.md
+
