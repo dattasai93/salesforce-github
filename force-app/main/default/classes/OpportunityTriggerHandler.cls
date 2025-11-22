@@ -7,7 +7,7 @@ public with sharing class OpportunityTriggerHandler {
             handleBeforeUpdate(newList, oldMap);
         }
     }
-
+    
     private static void handleBeforeInsert(List<Opportunity> oppList) {
         for (Opportunity opp : oppList) {
             if (opp.StageName == null) {
