@@ -10,7 +10,6 @@ private class AccountTriggerHandlerTest {
         }
         insert accounts;
     }
-
     @IsTest
     static void testBeforeInsertTrigger() {
         // Create a new account to fire before-insert trigger
