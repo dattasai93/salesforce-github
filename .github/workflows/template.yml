@@ -235,7 +235,7 @@ jobs:
           fi
 
       - name: Deploy Post Destructive Changes
-        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
+        if: ${{ github.event.pull_request.merged && github.event.action == 'closed' }}
         run: |
           if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml
           then
