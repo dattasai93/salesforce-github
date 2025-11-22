@@ -228,7 +228,7 @@ jobs:
 
           if grep -q '<types>' delta/package/package.xml ; then
           echo "---- Deploying added and modified metadata ----"
-          sf project deploy start --source-dir delta/force-app --target-org cicduat-org
+          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --tests
           else
           echo "---- No changes to deploy ----"
           fi
