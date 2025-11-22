@@ -124,7 +124,7 @@ jobs:
 
       - name: run the Apex Test Classes
         run: |
-          sf apex run test --target-org cicduat-org --code-coverage --result-format human -d ./ --wait 10
+          sf apex run test --target-org cicduat-org --code-coverage --result-format human -d ./ --wait 20
 
       ## Check the code coverage -- START
       - name: Set up Python
