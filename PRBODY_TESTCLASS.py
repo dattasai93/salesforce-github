@@ -12,7 +12,7 @@ def extract_apex_classes(file_path):
     match = re.search(r"APEX TEST CLASS TO RUN\s*\[RUN:([^\]]+)\]", text_content)
     if match:
         apex_classes = [cls.strip() for cls in match.group(1).split(',')]
-        apex_classes_string = ','.join(apex_classes)
+        apex_classes_string = ' '.join(apex_classes)
         print("Apex classes found:", apex_classes_string)
         return apex_classes_string  # Or return apex_classes if you need a list
     else:
