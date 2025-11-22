@@ -1,7 +1,6 @@
 public with sharing class AssetTriggerHandler {
 
     private static Id defaultAccountId;
-
     public static void handleBeforeInsert(List<Asset> assets) {
         if (defaultAccountId == null) {
             defaultAccountId = [SELECT Id FROM Account LIMIT 1].Id;
