@@ -225,9 +225,9 @@ jobs:
           echo "${{ github.event.action }}"
           echo "${{ github.event.pull_request.merged }}"
           
-          if grep -q '<types>' delta/package/package.xml ; then
-          echo "---- Deploying added and modified metadata ----"
-          sf project deploy start --source-dir delta/force-app --target-org cicduat-org
+          if grep -q '<types>' delta/package/package.xml; then
+            echo "---- Deploying added and modified metadata ----"
+            sf project deploy start --source-dir delta/force-app --target-org cicduat-org
           else
           echo "---- No changes to deploy ----"
           fi
