@@ -39,7 +39,7 @@ jobs:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
       TEST_LEVEL: RunSpecifiedTests
-      APEX_CLASS_RUN: OpportunityTriggerHandlerTest
+      APEX_CLASS_RUN: AccountTriggerHandlerTest,AssetTriggerTest,CaseTriggerTest,MyApexClassTest,OpportunityTriggerHandlerTest,LightningForgotPasswordController,LightningLoginFormController,LightningSelfRegisterController
 
     steps:
       - name: "Print the Information"
@@ -218,19 +218,22 @@ jobs:
           else
           echo "---- No changes to validate ----"
           fi
+
       - name: Deploy
-        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }} 
+        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
-          echo "${{ github.event_name }}"
-          echo "${{ github.event.action }}"
-          echo "${{ github.event.pull_request.merged }}"
-          
-          if grep -q '<types>' delta/package/package.xml; then
+          echo echo pull_request
+          echo echo closed
+          echo true
+
+          if [ -f delta/package/package.xml ] && grep -q '<types>' delta/package/package.xml; then
             echo "---- Deploying added and modified metadata ----"
-            sf project deploy start --source-dir delta/force-app --target-org cicduat-org
+            sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test
           else
-          echo "---- No changes to deploy ----"
+            echo "---- No changes to deploy ----"
           fi
+
+
 
       - name: Deploy Post Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
