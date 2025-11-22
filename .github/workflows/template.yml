@@ -39,7 +39,7 @@ jobs:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
       TEST_LEVEL: RunSpecifiedTests
-      APEX_CLASS_RUN: OpportunityTriggerHandlerTest
+      APEX_CLASS_RUN: AccountTriggerHandlerTest,AssetTriggerTest,CaseTriggerTest,MyApexClassTest,OpportunityTriggerHandlerTest,LightningForgotPasswordController,LightningLoginFormController,LightningSelfRegisterController
 
     steps:
       - name: "Print the Information"
