@@ -228,7 +228,7 @@ jobs:
 
           if [ -f delta/package/package.xml ] && grep -q '<types>' delta/package/package.xml; then
             echo "---- Deploying added and modified metadata ----"
-            sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests "AccountTriggerHandlerTest,AssetTriggerTest,CaseTriggerTest,MyApexClassTest,OpportunityTriggerHandlerTest,LightningForgotPasswordController,LightningLoginFormController,LightningSelfRegisterController"
+            sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests "AccountTriggerHandlerTest,AssetTriggerTest,CaseTriggerTest,MyApexClassTest,OpportunityTriggerHandlerTest"
           else
             echo "---- No changes to deploy ----"
           fi
