@@ -38,11 +38,12 @@ jobs:
     env:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
-      TEST_LEVEL: NoTestRun
-      APEX_CLASS_RUN: ''
+      TEST_LEVEL: RunSpecifiedTests
+      APEX_CLASS_RUN: AccountTriggerHandlerTest
 
     steps:
       - name: "Print the Information"
+        id: print-info
         run: |
           echo ${{ github.event }}
           echo ${{ github.event.action }}
@@ -50,11 +51,13 @@ jobs:
           echo ${{ env.TEST_LEVEL }}
 
       - name: Checkout Code
+        id: checkout-code
         uses: actions/checkout@v5.0.0
         with:
           fetch-depth: 0
           
       - name: npm install
+        id: npm
         run: echo "running npm install"
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
@@ -100,11 +103,13 @@ jobs:
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
+        id: upload-scarif-file
         with:
           sarif_file: pmd-report.sarif
 
       - name: Fail build if there are violations
         if: steps.pmd_scan.outputs.violations != 0
+        id: Fail-build-if-there-are-violations
         run: 
           echo "PMD Violations ${{steps.pmd_scan.outputs.violations}} "
         ##  echo "PMD outputs ${{toJSON(steps.pmd_scan.outputs)}} "
@@ -170,11 +175,9 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Install SFDX Git delta aka SGD
+        id: install-sfdx-git-delta
         run: |
           echo 'y' | sf plugins install sfdx-git-delta
-
-      - name: Create delta folder
-        run: |
           rm -rf delta
           mkdir delta
 
@@ -228,7 +231,7 @@ jobs:
 
           if grep -q '<types>' delta/package/package.xml ; then
           echo "---- Deploying added and modified metadata ----"
-          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests NoTestRun
+          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests AccountTriggerHandlerTest
           else
           echo "---- No changes to deploy ----"
           fi
@@ -242,6 +245,16 @@ jobs:
           else
           echo "---- No changes to validate ----"
           fi
+          
+      - name: Post to Slack with Steps
+        uses: act10ns/slack@v2
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          config: .github/config/slack.yml
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
  
       ## Post To Slack
       - name: Post to slack
@@ -252,6 +265,29 @@ jobs:
           message: Salesforce Deployment/Validation is ${{ job.status }} for *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|build>*
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Post to a Slack channel
+        id: slack
+        if: always()
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "GitHub Action build result: ${{ job.status }} \n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "To see the complete output of the GitHub Actions, click *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|here>*"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
 
 ## If the event is PR [opened, edited, reopened] - Validate the change
 ## If the PR is closed then - Deploy the change
