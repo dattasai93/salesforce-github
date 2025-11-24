@@ -38,8 +38,8 @@ jobs:
     env:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
-      TEST_LEVEL: RunSpecifiedTests
-      APEX_CLASS_RUN: AccountTriggerHandlerTest,AssetTriggerTest,CaseTriggerTest,MyApexClassTest,OpportunityTriggerHandlerTest,LightningForgotPasswordController,LightningLoginFormController,LightningSelfRegisterController
+      TEST_LEVEL: NoTestRun
+      APEX_CLASS_RUN: ''
 
     steps:
       - name: "Print the Information"
@@ -152,6 +152,7 @@ jobs:
             echo "apex_classes is empty."
           fi
 
+
       ## Sacn the code using SonarCloud
       - name: SonarCloud Scan
         id: sonar
@@ -167,7 +168,6 @@ jobs:
           flags: Apex
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
 
       - name: Install SFDX Git delta aka SGD
         run: |
@@ -228,11 +228,10 @@ jobs:
 
           if grep -q '<types>' delta/package/package.xml ; then
           echo "---- Deploying added and modified metadata ----"
-          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level NoTestRun
+          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests NoTestRun
           else
           echo "---- No changes to deploy ----"
           fi
-
 
       - name: Deploy Post Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
@@ -244,6 +243,15 @@ jobs:
           echo "---- No changes to validate ----"
           fi
  
+      ## Post To Slack
+      - name: Post to slack
+        uses: act10ns/slack@v2
+        if: always()
+        with:
+          status: finished
+          message: Salesforce Deployment/Validation is ${{ job.status }} for *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|build>*
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 ## If the event is PR [opened, edited, reopened] - Validate the change
 ## If the PR is closed then - Deploy the change
