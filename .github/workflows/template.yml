@@ -151,6 +151,7 @@ jobs:
           else
             echo "apex_classes is empty."
           fi
+          
 
       ## Sacn the code using SonarCloud
       - name: SonarCloud Scan
