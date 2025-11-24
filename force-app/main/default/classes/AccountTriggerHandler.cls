@@ -1,11 +1,17 @@
 public class AccountTriggerHandler {
-    public static void beforeInsert(List<Account> newAccounts) {
+
+    // Method to handle before-insert logic
+    public static void handleBeforeInsert(List<Account> newAccounts) {
+        // Debug each account ID
         for (Account acc : newAccounts) {
-            if (acc.Industry == 'Technology') {
-                acc.Active__c = true;
-            } else {
-                acc.Active__c = false;
-            }
+            System.debug('Account ID: ' + acc.Id);
+        }
+
+        // Iterate over the list and update fields
+        for (Account acc : newAccounts) {
+            acc.Description = 'Iterate over the list of records';
+            acc.Industry = 'Education';
+            acc.Fax = '9876543210';
         }
     }
 }

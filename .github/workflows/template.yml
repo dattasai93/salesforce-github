@@ -38,8 +38,8 @@ jobs:
     env:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
-      TEST_LEVEL: RunSpecifiedTests
-      APEX_CLASS_RUN: OpportunityTriggerHandlerTest
+      TEST_LEVEL: NoTestRun
+      APEX_CLASS_RUN: ''
 
     steps:
       - name: "Print the Information"
@@ -69,9 +69,9 @@ jobs:
           mkdir reports
           echo "Folder is Created"   
  
-          sf scanner run --format html --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design, Best Practises, Code Style, Performance, Security, Documentation, Error Prone --outfile reports/scan-reports.html
+          sf scanner run --format html --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne --outfile reports/scan-reports.html
           echo "Starting the Scanning in sarif Format"
-          sf scanner run --format sarif --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design, Best Practises, Code Style, Performance, Security, Documentation, Error Prone --outfile reports/scan-reports.sarif
+          sf scanner run --format sarif --target force-app/main/default/classes --engine=pmd,pmd-appexchange --category Design,BestPractises,CodeStyle,Performance,Security,Documentation,ErrorProne --outfile reports/scan-reports.sarif
           echo "Scanning is Completed"
 
       ## Upload the report results as artifacts
@@ -120,11 +120,11 @@ jobs:
         run: openssl enc -nosalt -aes-256-cbc -d -in ${{ secrets.ENCRYPTED_KEY_FILE }} -out ${{ secrets.JWT_KEY_FILE }} -base64 -K ${{ secrets.KEY }} -iv ${{ secrets.IV }}
 
       - name: Authorize with Salesforce org
-        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicd-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
+        run: sf org login jwt --username ${{ secrets.SF_USERNAME }} --jwt-key-file ${{ secrets.JWT_KEY_FILE }} --client-id ${{ secrets.SF_CLIENT_ID }} --set-default --alias cicduat-org --instance-url ${{ secrets.SF_INSTANCE_URL }}
 
       - name: run the Apex Test Classes
         run: |
-          sf apex run test --target-org cicd-org --code-coverage --result-format human -d ./ --wait 10
+          sf apex run test --target-org cicduat-org --code-coverage --result-format human -d ./ --wait 20
 
       ## Check the code coverage -- START
       - name: Set up Python
@@ -152,6 +152,7 @@ jobs:
             echo "apex_classes is empty."
           fi
 
+
       ## Sacn the code using SonarCloud
       - name: SonarCloud Scan
         id: sonar
@@ -167,7 +168,6 @@ jobs:
           flags: Apex
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
 
       - name: Install SFDX Git delta aka SGD
         run: |
@@ -188,9 +188,9 @@ jobs:
       - name: Validate Pre Destructive Changes
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed'}}
         run: |
-          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
+          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml; then
           echo "---- validating Destructive Changes ----"
-          sf project deploy validate --target-org cicd-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
+          sf project deploy validate --target-org cicduat-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
           else
           echo "---- No changes to validate ----"
           fi
@@ -202,9 +202,9 @@ jobs:
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
 
-          if grep -q '<types>' delta/package/package.xml ; then
+          if grep -q '<types>' delta/package/package.xml; then
           echo "---- validating added and modified metadata ----"
-          sf project deploy validate --source-dir delta/force-app --target-org cicd-org
+          sf project deploy validate --source-dir delta/force-app --target-org cicduat-org
           else
           echo "---- No changes to validate ----"
           fi
@@ -212,36 +212,47 @@ jobs:
       - name: Deploy Pre Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
-          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
+          if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml; then
           echo "---- deploying added and modified metadata ----"
-          sf project deploy start --target-org cicd-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
+          sf project deploy start --target-org cicduat-org --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml
           else
           echo "---- No changes to validate ----"
           fi
+
       - name: Deploy
-        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }} 
-        run: 
+        if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
+        run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
-          
+
           if grep -q '<types>' delta/package/package.xml ; then
           echo "---- Deploying added and modified metadata ----"
-          sf project deploy start --source-dir delta/force-app --target-org cicd-org
+          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests NoTestRun
           else
           echo "---- No changes to deploy ----"
           fi
 
+
       - name: Deploy Post Destructive Changes
         if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
         run: |
-          if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
+          if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml; then
           echo "---- deploying Destructive Changes ----"
-          sf project deploy start --target-org cicd-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml
+          sf project deploy start --target-org cicduat-org --post-destructive-changes destructiveChanges/postDestructiveChanges.xml --manifest destructiveChanges/package.xml
           else
           echo "---- No changes to validate ----"
           fi
  
+      ## Post To Slack
+      - name: Post to slack
+        uses: act10ns/slack@v2
+        if: always()
+        with:
+          status: finished
+          message: Salesforce Deployment/Validation is ${{ job.status }} for *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|build>*
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 ## If the event is PR [opened, edited, reopened] - Validate the change
 ## If the PR is closed then - Deploy the change

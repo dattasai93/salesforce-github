@@ -7,7 +7,6 @@ public with sharing class OpportunityTriggerHandler {
             handleBeforeUpdate(newList, oldMap);
         }
     }
-
     private static void handleBeforeInsert(List<Opportunity> oppList) {
         for (Opportunity opp : oppList) {
             if (opp.StageName == null) {
@@ -23,7 +22,6 @@ public with sharing class OpportunityTriggerHandler {
         for (Opportunity opp : newList) {
             Opportunity oldOpp = oldMap.get(opp.Id);
 
-            // Example rule: Don’t allow reducing Amount
             if (oldOpp != null && opp.Amount != null && oldOpp.Amount != null && opp.Amount < oldOpp.Amount) {
                 opp.addError('You cannot reduce the Opportunity Amount.');
             }

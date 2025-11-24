@@ -1,19 +1,24 @@
-private static void handleBeforeInsert(List<Asset> newAssets) {
-    // Filter Assets that need a default Account
-    List<Asset> assetsNeedingAccount = new List<Asset>();
-    for (Asset a : newAssets) {
-        if (a.AccountId == null && a.ContactId == null) {
-            assetsNeedingAccount.add(a);
+public with sharing class AssetTriggerHandler {
+
+    private static Id defaultAccountId;
+    
+    public static void handleBeforeInsert(List<Asset> assets) {
+        if (defaultAccountId == null) {
+            defaultAccountId = [SELECT Id FROM Account LIMIT 1].Id;
         }
-        if (a.Status == null) {
-            a.Status = 'Active';
+        for (Asset a : assets) {
+            if (a.AccountId == null && a.ContactId == null) a.AccountId = defaultAccountId;
+            if (a.Status == null) a.Status = 'Active';
         }
     }
 
-    if (!assetsNeedingAccount.isEmpty()) {
-        Account defaultAcc = [SELECT Id FROM Account LIMIT 1];
-        for (Asset a : assetsNeedingAccount) {
-            a.AccountId = defaultAcc.Id;
+    public static void handleBeforeUpdate(List<Asset> assets) {
+        if (defaultAccountId == null) {
+            defaultAccountId = [SELECT Id FROM Account LIMIT 1].Id;
+        }
+        for (Asset a : assets) {
+            if (a.AccountId == null && a.ContactId == null) a.AccountId = defaultAccountId;
+            if (a.Status == null) a.Status = 'Active';
         }
     }
 }
