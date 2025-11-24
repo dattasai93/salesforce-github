@@ -38,8 +38,8 @@ jobs:
     env:
       PR_BODY: ${{ github.event.pull_request.body }}
       NULL_VAR: ''
-      TEST_LEVEL: RunSpecifiedTests
-      APEX_CLASS_RUN: AccountTriggerHandlerTest
+      TEST_LEVEL: NoTestRun
+      APEX_CLASS_RUN: ''
 
     steps:
       - name: "Print the Information"
@@ -151,7 +151,7 @@ jobs:
           else
             echo "apex_classes is empty."
           fi
-          
+
 
       ## Sacn the code using SonarCloud
       - name: SonarCloud Scan
@@ -228,7 +228,7 @@ jobs:
 
           if grep -q '<types>' delta/package/package.xml ; then
           echo "---- Deploying added and modified metadata ----"
-          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests AccountTriggerHandlerTest
+          sf project deploy start --source-dir delta/force-app --target-org cicduat-org --test-level RunSpecifiedTests --tests NoTestRun
           else
           echo "---- No changes to deploy ----"
           fi

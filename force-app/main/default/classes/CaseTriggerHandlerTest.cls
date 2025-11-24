@@ -3,6 +3,7 @@ private class CaseTriggerHandlerTest {
 
     @isTest
     static void testInsertCaseDefaults() {
+
         
         // Arrange
         Case c = new Case(Subject = 'Test Case');
