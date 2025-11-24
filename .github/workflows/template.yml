@@ -270,23 +270,23 @@ jobs:
         id: slack
         if: always()
         uses: slackapi/slack-github-action@v2.1.1
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING-WEBHOOK
         with:
+          webhook-type: incoming-webhook
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }} \n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+              "text": "GitHub Action build result: ${{ job.status }} \n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
               "blocks": [
                 {
-                   "type": "section",
-                   "text":  {
-                     "type": "mrkdwn",
-                     "text": "To see the complete output of the GitHub Actions, click *<${{ github.server_url }}\n${{ github.repository }}actions/runs/${{ github.run_id }}|here>*"
-                   }
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "To see the complete output of the GitHub Actions, click *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|here>*"
+                  }
                 }
               ]
             }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
 ## If the event is PR [opened, edited, reopened] - Validate the change
