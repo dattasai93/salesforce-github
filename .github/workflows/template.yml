@@ -168,7 +168,6 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-
       - name: Install SFDX Git delta aka SGD
         run: |
           echo 'y' | sf plugins install sfdx-git-delta

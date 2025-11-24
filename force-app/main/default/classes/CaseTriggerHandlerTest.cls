@@ -12,6 +12,7 @@ private class CaseTriggerHandlerTest {
         // Assert
         Case insertedCase = [SELECT Origin FROM Case WHERE Id = :c.Id];
         System.assertEquals('Web', insertedCase.Origin, 'Origin should default to Web');
+        
     }
     @isTest
     static void testNegativeScenario() {
